@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chattelkasten — Local-First Zettelkasten, Schizo-Hypergraph &amp; Schreib-Studio</title>
+  <meta
+    name="description"
+    content="Chattelkasten ist eine eigenständig entwickelte, lokale Desktop-Anwendung (Tauri 2 + Rust + TypeScript) für wissenschaftliche Wissensarbeit mit expliziter Herkunftsmarkierung, Schizo-Perspektiven und Fail-Closed-Datenschutz."
+  />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top">
+        <img src="./favicon.svg" alt="" width="28" height="28" />
+        <span>Chattelkasten</span>
+        <span class="brand-version">v0.1.1</span>
+      </a>
+      <nav class="nav-links" aria-label="Hauptnavigation">
+        <a href="#arbeitsfluss">Arbeitsfluss</a>
+        <a href="#transparenz">Transparenz &amp; KI</a>
+        <a href="#architektur">Architektur</a>
+        <a href="#selbststaendigkeit">Einordnung</a>
+        <button type="button" class="theme-btn" id="theme-toggle" aria-label="Farbschema umschalten">
+          <span id="theme-icon" aria-hidden="true">☾</span>
+          <span id="theme-label">Dunkel</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap">
+        <div class="eyebrow">Local-First Desktop-App · Tauri 2 · Rust · TypeScript</div>
+        <h1>Wissenschaftliche Wissensarbeit mit expliziter Herkunft.</h1>
+        <p class="hero-lead">
+          <strong>Chattelkasten</strong> ist eine eigenständig entwickelte, lokale Desktop-Anwendung für einen
+          vereinheitlichten Markdown-Zettelkasten aus eigenen Notizen, Literaturreferenzen, Projekten und
+          dokumentierten KI-Dialogen — mit mehrperspektivischem Hypergraph, projektbezogenem Entscheidungslog
+          und harter Trennung zwischen eigener Textverfassung und transparenter KI-Assistenz.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#selbststaendigkeit">Hinweis zur Selbstständigkeitserklärung</a>
+          <a class="btn" href="#transparenz">KI-Ethik &amp; Provenienz</a>
+          <a class="btn" href="https://github.com/sk-go/chattelkasten" target="_blank" rel="noopener noreferrer">
+            Python-Analyse-Backend auf GitHub ↗
+          </a>
+        </div>
+
+        <div class="metrics" aria-label="Projektkennzahlen">
+          <div class="metric">
+            <div class="metric-val">100 % Local-First</div>
+            <div class="metric-label">Reine lokale Markdown-Dateien auf der eigenen Platte, atomare Schreibzugriffe</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">3 Arbeitsräume</div>
+            <div class="metric-label">Kasten, Organisation (Briefing &amp; Hypergraph) und Schreiben</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">Fail-Closed Privacy</div>
+            <div class="metric-label">Serverseitiger Rust-Filter sperrt sensible Ordner vor Cloud-APIs &amp; MCP</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">73 Tests grün</div>
+            <div class="metric-label">40 Rust- &amp; 33 TypeScript-Tests (Stand v0.1.1, inkl. Privacy- &amp; Graph-Audits)</div>
+          </div>
+        </div>
+
+        <!-- Interactive 3-Tab Studio Preview -->
+        <div class="studio-frame" aria-label="Interaktive Vorschau der drei Arbeitsräume">
+          <div class="studio-titlebar">
+            <div class="traffic-lights" aria-hidden="true">
+              <span class="dot dot-r"></span>
+              <span class="dot dot-y"></span>
+              <span class="dot dot-g"></span>
+            </div>
+
+            <div class="studio-tabs" role="tablist" aria-label="Arbeitsräume umschalten">
+              <button type="button" class="studio-tab" role="tab" aria-selected="true" data-tab="kasten">
+                1 · Kasten
+              </button>
+              <button type="button" class="studio-tab" role="tab" aria-selected="false" data-tab="organisation">
+                2 · Organisation
+              </button>
+              <button type="button" class="studio-tab" role="tab" aria-selected="false" data-tab="schreiben">
+                3 · Schreiben
+              </button>
+            </div>
+
+            <div class="studio-badges">
+              <span class="pill pill-accent">Perspektive: Begriff · Struktur · Motiv · Bild</span>
+              <span class="pill pill-ok">🔒 Datenschutz aktiv</span>
+            </div>
+          </div>
+
+          <div class="studio-body">
+            <!-- Panel 1: Kasten -->
+            <div class="studio-panel" data-panel="kasten">
+              <div class="preview-grid">
+                <div class="mock-card">
+                  <h4>Atomare Zettel mit Herkunft &amp; Prüf-Eingang</h4>
+                  <div class="zettel-list">
+                    <div class="zettel-item">
+                      <div class="zettel-top">
+                        <span class="zettel-title">Bildung als Weltverhältnis statt Kompetenzliste</span>
+                        <span class="pill pill-ok">ich · geprüft ✓</span>
+                      </div>
+                      <p class="zettel-desc">
+                        Eigene Permanenz — trennt funktionale Qualifikation von transformativer Auseinandersetzung mit Widerstand.
+                      </p>
+                    </div>
+                    <div class="zettel-item">
+                      <div class="zettel-top">
+                        <span class="zettel-title">Rückkopplung zwischen Werkzeug und Denkform</span>
+                        <span class="pill pill-accent">gemeinsam · Gespräch</span>
+                      </div>
+                      <p class="zettel-desc">
+                        Im Dialog geschärfter Gedanke mit Verweis auf Primärquelle und offener Gegenfrage für das Zettel-Sparring.
+                      </p>
+                    </div>
+                    <div class="zettel-item">
+                      <div class="zettel-top">
+                        <span class="zettel-title">Prüf-Eingang (MCP): Vorschlag wartet auf Freigabe</span>
+                        <span class="pill pill-warn">Ideen/_Eingang/</span>
+                      </div>
+                      <p class="zettel-desc">
+                        Externe Agenten schreiben niemals direkt in den Kasten — jeder Vorschlag durchläuft das explizite Prüf-Gate.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mock-card">
+                  <h4>Heimatbasis &amp; Kasten-Pflege</h4>
+                  <ul class="check-list">
+                    <li><strong>Multi-Kasten-Profile:</strong> Physisch getrennte Zettelkästen mit eigener Port-Zuordnung und strenger Datenschutz-Union.</li>
+                    <li><strong>Cluster-first Gesamt-Graph:</strong> Rendert auf Ebene 0 Bereiche &amp; Cluster (&lt; 100 ms Budget) und öffnet Zettel erst bei gezieltem Zoom.</li>
+                    <li><strong>Import &amp; Zettel-Sparring:</strong> Clippings und Chat-Exporte werden mit wählbarem Extraktions-Modell geprüft und vor dem Speichern geschärft.</li>
+                    <li><strong>Kontextsensitives Undo (⌘Z):</strong> Reversible Kasten-Aktionen lassen sich konfliktsicher rückgängig machen.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel 2: Organisation -->
+            <div class="studio-panel" data-panel="organisation" hidden>
+              <div class="preview-grid">
+                <div class="mock-card">
+                  <h4>Projekt-Hypergraph (Bubble Sets, Brücken &amp; Spannungen)</h4>
+                  <svg class="hypergraph-svg" viewBox="0 0 460 230" role="img" aria-label="Schematische Darstellung eines Hypergraphen mit Kapitel-Membranen, geteilten Zetteln, Außenbrücke und Widerspruchsbogen">
+                    <!-- Membranes -->
+                    <ellipse cx="148" cy="108" rx="108" ry="72" fill="rgba(110,123,242,0.14)" stroke="#6e7bf2" stroke-width="2" />
+                    <ellipse cx="304" cy="102" rx="112" ry="74" fill="rgba(52,211,153,0.13)" stroke="#22b583" stroke-width="2" />
+                    <ellipse cx="228" cy="162" rx="106" ry="50" fill="rgba(245,158,11,0.13)" stroke="#e5940c" stroke-width="2" />
+                    <!-- Conflict arc -->
+                    <path d="M 110 86 Q 225 22 336 86" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4" />
+                    <text x="224" y="42" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">⚡ Widerspruch (Modellurteil)</text>
+                    <!-- Outer bridge -->
+                    <line x1="226" y1="112" x2="394" y2="188" stroke="#4c58cf" stroke-width="1.6" stroke-dasharray="3 3" />
+                    <circle cx="394" cy="188" r="7" fill="none" stroke="#4c58cf" stroke-width="2.2" />
+                    <text x="386" y="212" text-anchor="middle" font-size="10.5" fill="currentColor" opacity="0.8">◌ Außenbrücke (Motiv)</text>
+                    <!-- Nodes -->
+                    <circle cx="110" cy="86" r="7" fill="#6e7bf2" />
+                    <circle cx="152" cy="138" r="6" fill="#6e7bf2" />
+                    <circle cx="226" cy="112" r="8" fill="#181c26" stroke="#ffffff" stroke-width="2.5" />
+                    <circle cx="336" cy="86" r="7" fill="#22b583" />
+                    <circle cx="294" cy="148" r="6" fill="#e5940c" />
+                    <circle cx="212" cy="176" r="6" fill="#e5940c" />
+                    <!-- Labels -->
+                    <text x="80" y="64" font-size="11" font-weight="600" fill="#4c58cf">1 · Begriff</text>
+                    <text x="310" y="62" font-size="11" font-weight="600" fill="#15803d">2 · Kritik</text>
+                    <text x="192" y="202" font-size="11" font-weight="600" fill="#b45309">3 · Synthese</text>
+                    <text x="226" y="131" text-anchor="middle" font-size="10.5" font-weight="600" fill="currentColor">Geteilter Zettel</text>
+                  </svg>
+                </div>
+
+                <div class="mock-card">
+                  <h4>Briefing, Gliederung &amp; Entscheidungslog</h4>
+                  <ul class="check-list">
+                    <li><strong>Fragestellung &amp; Quellen:</strong> Exposé, Seminarplan sowie Markdown- und PDF-Quellen direkt im Projekt verknüpft.</li>
+                    <li><strong>Kuratierte Zuordnung:</strong> Zettel per <code>✓</code> annehmen, per <code>✗</code> verwerfen und per Perspektiv-Wechsel auf blinde Flecken (<code>◌</code>) prüfen.</li>
+                    <li><strong>Widerspruchs-Klärung (⚡):</strong> Beide Zettel und das explizit gekennzeichnete Modellurteil stehen nebeneinander — inkl. Übernahme in <code>entscheidungen.md</code>.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel 3: Schreiben -->
+            <div class="studio-panel" data-panel="schreiben" hidden>
+              <div class="preview-grid">
+                <div class="mock-card editor-mock">
+                  <h4>CodeMirror-6-Editor direkt auf lokaler .md-Datei</h4>
+                  <p class="editor-heading">2.1 Autonomie im Umgang mit digitalen Werkzeugen</p>
+                  <p style="margin:0 0 10px;">
+                    Ein Werkzeug bleibt nur dann bildungsförderlich, wenn seine operativen Grenzen sichtbar bleiben
+                    und <span class="critic-mark" title="KI-Kritiker: Klarheit / Beleg prüfen">jeder Übergang zwischen eigener Urteilsbildung und maschineller Vorstrukturierung nachvollziehbar dokumentiert wird</span>.
+                  </p>
+                  <div class="provenance-box">
+                    <div class="provenance-meta">&lt;!-- ck:ki-entwurf:start herkunft="G" datum="2026-11-26" --&gt;</div>
+                    Optionale KI-Rohentwürfe sind dauerhaft als <strong>G</strong> markiert — in Markdown, im Editor-Gutter
+                    und im Lesemodus. Die Markierung verschwindet niemals automatisch.
+                  </div>
+                </div>
+
+                <div class="mock-card">
+                  <h4>Live-Schizo-Cockpit &amp; Duale Abschnitts-Hilfe</h4>
+                  <ul class="check-list">
+                    <li><strong>Live-Brücken je Absatz:</strong> Zeigt passende angenommene Zettel, Querbezüge und Literaturverweise passend zur Cursor-Position.</li>
+                    <li><strong>Expliziter KI-Kritiker:</strong> Prüft auf Klick in exakt 3 Kategorien: <em>Argument-Lücken</em>, <em>Widersprüche</em> und <em>Klarheit</em>.</li>
+                    <li><strong>Argumentations-Gerüst (Standard):</strong> Erzeugt rein lokal eine Stichpunkt- &amp; Belegstruktur ohne Fließtext.</li>
+                    <li><strong>Kein „Ent-KI-Lektorat“:</strong> Funktionen zum Glätten oder Verschleiern von KI-Spuren sind konzeptionell ausgeschlossen.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Workflow & Schizo -->
+    <section class="block" id="arbeitsfluss">
+      <div class="wrap">
+        <p class="section-kicker">01 · Methode &amp; Arbeitsfluss</p>
+        <h2 class="section-title">Vom verstreuten Material zur strukturierten Arbeit — in drei ruhigen Räumen</h2>
+        <p class="section-intro">
+          Chattelkasten verbindet den offenen Zettelkasten mit einer fokussierten Projekt- und Schreibumgebung.
+          Alle Dateien bleiben jederzeit lesbares lokales Markdown; nichts wird in eine proprietäre Datenbank eingeschlossen.
+        </p>
+
+        <div class="cards-3">
+          <article class="card">
+            <div class="card-num">TAB 01</div>
+            <h3>Kasten</h3>
+            <p>
+              Die Heimatbasis für atomare Zettel, eigene Permanenzen, Literaturreferenzen und importierte Gesprächsauszüge.
+            </p>
+            <ul class="check-list">
+              <li>Cluster-first Gesamt-Kasten-Graph</li>
+              <li>Import &amp; Extraktion mit frei wählbarem Modell</li>
+              <li>Zettel-Sparring vor oder nach der Aufnahme</li>
+              <li>Prüf-Eingang (<code>Ideen/_Eingang/</code>) für MCP</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-num">TAB 02</div>
+            <h3>Organisation</h3>
+            <p>
+              Führt Fragestellung, Quellen, Gliederung und visuellen Projekt-Hypergraphen in einer einzigen Oberfläche zusammen.
+            </p>
+            <ul class="check-list">
+              <li>Exposé + Markdown-/PDF-Quellen</li>
+              <li>Vollbild-Hypergraph mit Bubble Sets</li>
+              <li><code>◌</code>-Außenbrücken &amp; <code>⚡</code>-Widerspruchsklärung</li>
+              <li>Kuratierte <code>entscheidungen.md</code></li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-num">TAB 03</div>
+            <h3>Schreiben</h3>
+            <p>
+              Integrierter CodeMirror-6-Editor direkt auf der eigenen <code>.md</code>-Arbeitsdatei — begleitet vom Live-Schizo-Cockpit.
+            </p>
+            <ul class="check-list">
+              <li>Absatzbezogene Zettel- &amp; Quellenbrücken</li>
+              <li>BibTeX-Zitationen &amp; Literaturverzeichnis</li>
+              <li>Inline-Kritiker (Lücke, Widerspruch, Klarheit)</li>
+              <li>Argumentations-Gerüst &amp; markierter <code>G</code>-Entwurf</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="schizo-banner">
+          <div>
+            <h3>Das Schizo-Prinzip: gleichberechtigte Perspektiven ohne Hauptstimme</h3>
+            <p>
+              Statt Wissen in eine einzige starre Hierarchie zu pressen, betrachtet Chattelkasten denselben Bestand
+              über mehrere gleichberechtigte analytische Raster. Wenn ein Zettel aus einer anderen Perspektive eine
+              starke Verbindung aufweist, markiert ihn die Anwendung symmetrisch als <strong>Außenbrücke (<code>◌</code>)</strong> —
+              so werden produktive Spannungen sichtbar statt geglättet.
+            </p>
+          </div>
+          <div class="voice-pills" aria-label="Beispielhafte Schizo-Perspektiven">
+            <span class="pill pill-accent">Begriff</span>
+            <span class="pill pill-ok">Struktur</span>
+            <span class="pill pill-warn">Motiv</span>
+            <span class="pill">Bild</span>
+            <span class="pill">◌ Außenbrücke</span>
+            <span class="pill pill-err">⚡ Spannung / Widerspruch</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Transparency & Academic Integrity -->
+    <section class="block" id="transparenz">
+      <div class="wrap">
+        <p class="section-kicker">02 · Wissenschaftliche Integrität</p>
+        <h2 class="section-title">Transparenz, Herkunft und Datenschutz als feste Software-Regeln</h2>
+        <p class="section-intro">
+          Zentrales Entwurfsziel von Chattelkasten ist es, den Einsatz digitaler und KI-gestützter Werkzeuge
+          im wissenschaftlichen Arbeiten <strong>nachvollziehbar, abgrenzbar und prüfbar</strong> zu machen — statt
+          Autorschaft zu verwischen.
+        </p>
+
+        <div class="cards-2">
+          <article class="card">
+            <div class="card-num">GARANTIE A</div>
+            <h3>Durchgängige Herkunftsmarkierung</h3>
+            <p>
+              Jeder Zettel im Kasten trägt sichtbar seine Herkunft (<code>ich</code>, <code>gemeinsam</code>,
+              <code>quelle</code> oder <code>unklar</code>) sowie den Prüfstatus von Literatur- und Autorenangaben
+              (<code>✓</code> geprüft / <code>○</code> ungeprüft). Quellenarbeit und eigene Gedanken bleiben jederzeit unterscheidbar.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-num">GARANTIE B</div>
+            <h3>Kein stilles Ghostwriting, kein „Ent-KI-Lektorat“</h3>
+            <p>
+              Die Anwendung generiert niemals unbemerkt Text im Hintergrund und schließt jede Funktion zur
+              Verschleierung von KI-Herkunft ausdrücklich aus. Im Editor stehen stattdessen ein lokales
+              <strong>Argumentations-Gerüst</strong> (ohne Fließtext), ein expliziter <strong>KI-Kritiker</strong>
+              und – nur auf bewussten Klick – dauerhaft als <code>G</code> markierte Rohentwürfe zur Verfügung.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-num">GARANTIE C</div>
+            <h3>Kontext-Chips &amp; projektbezogene <code>entscheidungen.md</code></h3>
+            <p>
+              Der optionale Fenster-Assistent (<code>⌘J</code>) arbeitet strikt beratend und zeigt vor jeder Anfrage
+              abwählbare Kontext-Chips, die exakt offenlegen, welche nicht-privaten Dokumente übergeben werden.
+              Bewusste inhaltliche und methodische Festlegungen werden datiert in <code>entscheidungen.md</code> dokumentiert.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-num">GARANTIE D</div>
+            <h3>Fail-Closed-Datenschutz (<code>privacy.rs</code>)</h3>
+            <p>
+              Sensible Ordner und als <code>privat: true</code> markierte Notizen werden serverseitig im Rust-Backend
+              vor Cloud-KI-APIs, MCP-Servern und Projekt-Briefings blockiert. Jeder Kontakt löst eine sichtbare
+              Benachrichtigung aus; Multi-Kasten-Profile können Sperren niemals abschwächen.
+            </p>
+          </article>
+        </div>
+
+        <div class="matrix-wrap">
+          <table class="matrix">
+            <thead>
+              <tr>
+                <th>Funktion im Arbeitsprozess</th>
+                <th>Verarbeitung</th>
+                <th>Transparenz- &amp; Kontrollmechanismus</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Zettel-Suche, Hypergraph &amp; Gliederung</strong></td>
+                <td>Lokal (Rust + lokales <code>czk</code>-Backend auf <code>127.0.0.1</code>)</td>
+                <td>Herkunft (<code>ich</code> / <code>gemeinsam</code> / <code>quelle</code>) und Ähnlichkeitsschwelle dauerhaft sichtbar</td>
+              </tr>
+              <tr>
+                <td><strong>Argumentations-Gerüst (Editor)</strong></td>
+                <td>Lokal, kein Fließtext</td>
+                <td>Stellt angenommene Zettel, Belege, <code>⚡</code>-Spannungen und Entscheidungen strukturiert zusammen</td>
+              </tr>
+              <tr>
+                <td><strong>Inline-Kritiker &amp; Zettel-Sparring</strong></td>
+                <td>Expliziter Klick (Ollama lokal oder BYOK)</td>
+                <td>Prüft Lücken, Widersprüche und Klarheit; alle Dateipfade vorab durch <code>privacy.rs</code> gefiltert</td>
+              </tr>
+              <tr>
+                <td><strong>Optionaler KI-Rohentwurf</strong></td>
+                <td>Expliziter Klick (Opt-in)</td>
+                <td>Dauerhafte Markdown-Marker <code>&lt;!-- ck:ki-entwurf:start herkunft="G" ... --&gt;</code> + visuelles Editor-Highlight</td>
+              </tr>
+              <tr>
+                <td><strong>Externe KI-Agenten über MCP</strong></td>
+                <td>Lesend + isolierte Prüf-Inbox</td>
+                <td>Kein Direkt-Schreiben in Zettel oder Manuskript; Vorschläge landen ausschließlich in <code>Ideen/_Eingang/</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Architecture -->
+    <section class="block" id="architektur">
+      <div class="wrap">
+        <p class="section-kicker">03 · Technische Architektur</p>
+        <h2 class="section-title">Schlanker Desktop-Kern in Rust &amp; TypeScript</h2>
+        <p class="section-intro">
+          Chattelkasten trennt Oberfläche, Sicherheits-/Dateischicht und semantisches Analyse-Backend über
+          klar typisierte Schnittstellen. Alle Kernpfade sind durch automatisierte Tests abgesichert.
+        </p>
+
+        <div class="arch-stack">
+          <div class="arch-layer">
+            <span class="arch-layer-tag">Frontend · TypeScript &amp; Vite</span>
+            <h3>Oberfläche, Editor &amp; Hypergraph</h3>
+            <p>
+              Komponenten für <code>Kasten</code>, <code>Organisation</code> und <code>Schreiben</code>,
+              CodeMirror 6 (inkl. Inline-Kritiker &amp; Provenienz-Highlight), <code>bubblesets-js</code> für
+              Kapitel-Membranen, kontextsensitives Scoped Undo und 33 automatisierte TypeScript-Tests.
+            </p>
+          </div>
+
+          <div class="arch-layer">
+            <span class="arch-layer-tag">Backend · Tauri 2 &amp; Rust</span>
+            <h3>Datenschutz, Dateien &amp; KI-Guards</h3>
+            <p>
+              Serverseitiger Fail-Closed-Filter (<code>privacy.rs</code>), atomare Datei-I/O (<code>workspace.rs</code>),
+              Multi-Kasten-Konfiguration mit <code>0600</code>-Rechten (<code>config.rs</code>), BibTeX-Zitationen,
+              Decision Log (<code>decisions.rs</code>) und 40 automatisierte Rust-Tests.
+            </p>
+          </div>
+
+          <div class="arch-layer">
+            <span class="arch-layer-tag">Rechenmotor · Python (lokal)</span>
+            <h3>Semantik, Embeddings &amp; MCP</h3>
+            <p>
+              Das lokale Open-Source-Backend <a href="https://github.com/sk-go/chattelkasten" target="_blank" rel="noopener noreferrer"><code>chattelkasten</code></a>
+              stellt in <code>v0.1.1</code> über <code>127.0.0.1</code> Embeddings, Schizo-Ähnlichkeiten,
+              Widerspruchserkennung und den MCP-Server bereit (Entkopplung über <code>trait KastenEngine</code>).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Academic Declaration Context -->
+    <section class="block" id="selbststaendigkeit">
+      <div class="wrap">
+        <p class="section-kicker">04 · Einordnung für Prüfende</p>
+        <h2 class="section-title">Verweis im Rahmen einer Selbstständigkeitserklärung</h2>
+
+        <div class="declaration-box">
+          <h3>Dokumentation des Werkzeugs &amp; der Mensch-KI-Zusammenarbeit</h3>
+          <p>
+            Diese Seite dokumentiert das eigenständig konzipierte und in iterativer Mensch-KI-Zusammenarbeit
+            entwickelte Softwareprojekt <strong>Chattelkasten</strong> (Stand <code>v0.1.1</code>, November 2026)
+            als transparenten Referenzpunkt für wissenschaftliche Arbeiten, in denen das Werkzeug zur
+            Wissensorganisation, Literatur- und Begriffsarbeit oder Schreibbegleitung eingesetzt wurde.
+          </p>
+          <p>
+            Chattelkasten ist als Arbeits-, Strukturierungs- und Reflexionsumgebung entworfen: Die Auswahl von
+            Fragestellungen, die Bewertung von Quellen und Widersprüchen, getroffene Gliederungsentscheidungen
+            (<code>entscheidungen.md</code>) sowie die eigenständige wissenschaftliche Urteilsbildung und
+            Textverfassung verbleiben vollständig bei der schreibenden Person. Wo KI-Modelle beratend
+            (z. B. im Zettel-Sparring oder durch den Inline-Kritiker) hinzugezogen werden, geschieht dies
+            explizit ausgelöst, datenschutzgefiltert und unter klarer Herkunftsmarkierung.
+          </p>
+          <p>
+            Auch die Entwicklung der Software selbst erfolgte transparent im Zusammenspiel aus menschlicher
+            Konzeption, Architektur-Spezifikationen, kritischen Review-Zyklen und KI-gestützter Implementierung
+            sowie automatisierter Verifikation.
+          </p>
+
+          <div class="meta-grid">
+            <div class="meta-item">
+              <strong>Öffentliches Analyse-Backend</strong>
+              <a href="https://github.com/sk-go/chattelkasten" target="_blank" rel="noopener noreferrer">
+                github.com/sk-go/chattelkasten
+              </a>
+            </div>
+            <div class="meta-item">
+              <strong>Desktop-App (Quellcode)</strong>
+              Privates Repository (<code>chattelkasten-app</code>, Tag <code>v0.1.1</code>) — Gutachter:innen
+              auf Anfrage jederzeit zur Einsicht zugänglich.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <span>Chattelkasten · <strong>chattelkasten.com</strong> · Stand v0.1.1 (November 2026)</span>
+      <span>Statische Seite — keine Cookies, kein Tracking, keine externen Skripte.</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // Theme toggle (defaults to editorial light; respects saved choice)
+      var root = document.documentElement;
+      var btn = document.getElementById("theme-toggle");
+      var icon = document.getElementById("theme-icon");
+      var label = document.getElementById("theme-label");
+
+      function applyTheme(theme) {
+        root.setAttribute("data-theme", theme);
+        var isDark = theme === "dark";
+        if (icon) icon.textContent = isDark ? "☀" : "☾";
+        if (label) label.textContent = isDark ? "Hell" : "Dunkel";
+      }
+
+      var saved = null;
+      try { saved = localStorage.getItem("ck-site-theme"); } catch (_) {}
+      if (saved === "dark" || saved === "light") {
+        applyTheme(saved);
+      }
+
+      if (btn) {
+        btn.addEventListener("click", function () {
+          var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          applyTheme(next);
+          try { localStorage.setItem("ck-site-theme", next); } catch (_) {}
+        });
+      }
+
+      // Interactive 3-tab preview
+      var tabs = document.querySelectorAll(".studio-tab");
+      var panels = document.querySelectorAll(".studio-panel");
+      tabs.forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          var target = tab.getAttribute("data-tab");
+          tabs.forEach(function (t) {
+            t.setAttribute("aria-selected", t === tab ? "true" : "false");
+          });
+          panels.forEach(function (p) {
+            if (p.getAttribute("data-panel") === target) {
+              p.removeAttribute("hidden");
+            } else {
+              p.setAttribute("hidden", "");
+            }
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
