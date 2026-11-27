@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chattelkasten — Local-First Zettelkasten, Schizo-Hypergraph &amp; Schreib-Studio</title>
+  <title>Chattelkasten — Transhumanistisches Forschungswerkzeug &amp; Local-First Zettelkasten</title>
   <meta
     name="description"
-    content="Chattelkasten ist eine eigenständig entwickelte, lokale Desktop-Anwendung (Tauri 2 + Rust + TypeScript) für wissenschaftliche Wissensarbeit mit expliziter Herkunftsmarkierung, Schizo-Perspektiven und Fail-Closed-Datenschutz."
+    content="Chattelkasten ist ein eigenständig entwickeltes, lokales transhumanistisches Forschungswerkzeug (Tauri 2 + Rust + TypeScript): ein einheitlicher Markdown-Zettelkasten mit mehrperspektivischem Hypergraph, expliziter Herkunftsmarkierung und Fail-Closed-Datenschutz."
   />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="stylesheet" href="./styles.css" />
@@ -27,10 +27,10 @@
         <span class="brand-version">v0.1.1</span>
       </a>
       <nav class="nav-links" aria-label="Hauptnavigation">
-        <a href="#arbeitsfluss">Arbeitsfluss</a>
-        <a href="#transparenz">Transparenz &amp; KI</a>
+        <a href="#arbeitsfluss">Arbeitsräume</a>
+        <a href="#transparenz">Prinzipien</a>
         <a href="#architektur">Architektur</a>
-        <a href="#selbststaendigkeit">Einordnung</a>
+        <a href="#einordnung">Kontext</a>
         <button type="button" class="theme-btn" id="theme-toggle" aria-label="Farbschema umschalten">
           <span id="theme-icon" aria-hidden="true">☾</span>
           <span id="theme-label">Dunkel</span>
@@ -55,34 +55,35 @@
       <div class="wrap">
         <div class="eyebrow">
           <span class="eyebrow-dot" aria-hidden="true"></span>
-          Local-First Desktop-App · Tauri 2 · Rust · TypeScript
+          Transhumanistisches Forschungswerkzeug · Local-First · Tauri 2 &amp; Rust
         </div>
-        <h1>Wissenschaftliche Wissensarbeit mit expliziter Herkunft.</h1>
+        <h1>Denken jenseits einer einzelnen Perspektive.</h1>
         <p class="hero-lead">
-          <strong>Chattelkasten</strong> ist eine eigenständig entwickelte, lokale Desktop-Anwendung für einen
-          vereinheitlichten Markdown-Zettelkasten aus eigenen Notizen, Literaturreferenzen, Projekten und
-          dokumentierten KI-Dialogen — mit mehrperspektivischem Hypergraph, projektbezogenem Entscheidungslog
-          und harter Trennung zwischen eigener Textverfassung und transparenter KI-Assistenz.
+          <strong>Chattelkasten</strong> ist ein eigenständig entwickeltes, lokales
+          <strong>transhumanistisches Forschungswerkzeug</strong> — nicht als Ersatz menschlicher Urteilskraft,
+          sondern als ihre transparente Erweiterung. Es vereint eigene Gedanken, Literatur und dokumentierte
+          KI-Dialoge in einem einheitlichen Markdown-Zettelkasten mit gleichberechtigten Perspektiven,
+          visuellem Hypergraph und konsequenter Herkunftsmarkierung.
         </p>
 
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#selbststaendigkeit">Hinweis zur Selbstständigkeitserklärung</a>
-          <a class="btn" href="#transparenz">KI-Ethik &amp; Provenienz</a>
-          <a class="btn" href="#architektur">Technische Architektur</a>
+          <a class="btn btn-primary" href="#transparenz">Forschungsprinzipien</a>
+          <a class="btn" href="#arbeitsfluss">Arbeitsräume</a>
+          <a class="btn" href="#einordnung">Kontext &amp; Vorstellung</a>
         </div>
 
         <div class="metrics" aria-label="Projektkennzahlen">
           <div class="metric">
-            <div class="metric-val">100 % Local-First</div>
-            <div class="metric-label">Reine lokale Markdown-Dateien auf der eigenen Platte, atomare Schreibzugriffe</div>
+            <div class="metric-val">Einheitlicher Kasten</div>
+            <div class="metric-label">Alle Zettel als offene lokale Markdown-Dateien — ohne Sonderklassen, ohne Lock-in</div>
           </div>
           <div class="metric">
-            <div class="metric-val">3 Arbeitsräume</div>
-            <div class="metric-label">Kasten, Organisation (Briefing &amp; Hypergraph) und Schreiben</div>
+            <div class="metric-val">Schizo-Perspektiven</div>
+            <div class="metric-label">Gleichberechtigte analytische Raster ohne Hauptstimme, mit Brücken (◌) und Spannungen (⚡)</div>
           </div>
           <div class="metric">
             <div class="metric-val">Fail-Closed Privacy</div>
-            <div class="metric-label">Serverseitiger Rust-Filter sperrt sensible Ordner vor Cloud-APIs &amp; MCP</div>
+            <div class="metric-label">Serverseitiger Rust-Filter sperrt sensible Bereiche strikt vor Cloud-APIs &amp; MCP</div>
           </div>
           <div class="metric">
             <div class="metric-val">73 Tests grün</div>
@@ -123,7 +124,7 @@
               <div class="studio-panel" data-panel="kasten">
                 <div class="preview-grid">
                   <div class="mock-card">
-                    <h4>Atomare Zettel mit Herkunft &amp; Prüf-Eingang</h4>
+                    <h4>Einheitlicher Zettelbestand mit Herkunft &amp; Prüf-Eingang</h4>
                     <div class="zettel-list">
                       <div class="zettel-item">
                         <div class="zettel-top">
@@ -131,16 +132,16 @@
                           <span class="pill pill-ok">ich · geprüft ✓</span>
                         </div>
                         <p class="zettel-desc">
-                          Eigene Permanenz — trennt funktionale Qualifikation von transformativer Auseinandersetzung mit Widerstand.
+                          Atomarer Zettel aus eigener Reflexion — trennt funktionale Qualifikation von transformativer Auseinandersetzung mit Widerstand.
                         </p>
                       </div>
                       <div class="zettel-item">
                         <div class="zettel-top">
-                          <span class="zettel-title">Rückkopplung zwischen Werkzeug und Denkform</span>
-                          <span class="pill pill-accent">gemeinsam · Gespräch</span>
+                          <span class="zettel-title">Rückkopplung zwischen Denkwerkzeug und Urteilskraft</span>
+                          <span class="pill pill-accent">gemeinsam · Dialog</span>
                         </div>
                         <p class="zettel-desc">
-                          Im Dialog geschärfter Gedanke mit Verweis auf Primärquelle und offener Gegenfrage für das Zettel-Sparring.
+                          Im Dialog geschärfter Zettel mit Verweis auf Primärquelle und offener Gegenfrage für das Zettel-Sparring.
                         </p>
                       </div>
                       <div class="zettel-item">
@@ -219,8 +220,8 @@
                     <h4>CodeMirror-6-Editor direkt auf lokaler .md-Datei</h4>
                     <p class="editor-heading">2.1 Autonomie im Umgang mit digitalen Werkzeugen</p>
                     <p style="margin:0 0 10px; color: var(--fg-soft);">
-                      Ein Werkzeug bleibt nur dann bildungsförderlich, wenn seine operativen Grenzen sichtbar bleiben
-                      und <span class="critic-mark" title="KI-Kritiker: Klarheit / Beleg prüfen">jeder Übergang zwischen eigener Urteilsbildung und maschineller Vorstrukturierung nachvollziehbar dokumentiert wird</span>.
+                      Ein Denkwerkzeug erweitert die eigene Urteilskraft nur dann, wenn seine operativen Grenzen sichtbar bleiben
+                      und <span class="critic-mark" title="KI-Kritiker: Klarheit / Beleg prüfen">jeder Übergang zwischen eigener Reflexion und maschineller Vorstrukturierung nachvollziehbar dokumentiert wird</span>.
                     </p>
                     <div class="provenance-box">
                       <div class="provenance-meta">&lt;!-- ck:ki-entwurf:start herkunft="G" datum="2026-11-26" --&gt;</div>
@@ -249,19 +250,20 @@
     <!-- Section 1: Workflow & Schizo (subtle mist band) -->
     <section class="block band-subtle" id="arbeitsfluss">
       <div class="wrap">
-        <p class="section-kicker">01 · Methode &amp; Arbeitsfluss</p>
-        <h2 class="section-title">Vom verstreuten Material zur strukturierten Arbeit — in drei ruhigen Räumen</h2>
+        <p class="section-kicker">01 · Idee &amp; Arbeitsräume</p>
+        <h2 class="section-title">Ein erweiterter Denkraum in drei ruhigen Arbeitsräumen</h2>
         <p class="section-intro">
-          Chattelkasten verbindet den offenen Zettelkasten mit einer fokussierten Projekt- und Schreibumgebung.
-          Alle Dateien bleiben jederzeit lesbares lokales Markdown; nichts wird in eine proprietäre Datenbank eingeschlossen.
+          Statt Gedanken zwischen Chatverläufen, Notizen und Textverarbeitung zu zersplittern, führt Chattelkasten
+          alle Zettel, Referenzen und Projekte in einem offenen lokalen Markdown-Bestand zusammen — als langlebiges
+          kognitives Gegenüber ohne Trennung in künstliche Zettelklassen.
         </p>
 
         <div class="cards-3">
           <article class="card">
-            <div class="card-num">TAB 01</div>
+            <div class="card-num">RAUM 01</div>
             <h3>Kasten</h3>
             <p>
-              Die Heimatbasis für atomare Zettel, eigene Permanenzen, Literaturreferenzen und importierte Gesprächsauszüge.
+              Der einheitliche Zettelbestand für eigene Gedanken, Lektüre-Exzerpte, Literaturreferenzen und dokumentierte Dialoge.
             </p>
             <ul class="check-list">
               <li>Cluster-first Gesamt-Kasten-Graph</li>
@@ -272,7 +274,7 @@
           </article>
 
           <article class="card">
-            <div class="card-num">TAB 02</div>
+            <div class="card-num">RAUM 02</div>
             <h3>Organisation</h3>
             <p>
               Führt Fragestellung, Quellen, Gliederung und visuellen Projekt-Hypergraphen in einer einzigen Oberfläche zusammen.
@@ -286,7 +288,7 @@
           </article>
 
           <article class="card">
-            <div class="card-num">TAB 03</div>
+            <div class="card-num">RAUM 03</div>
             <h3>Schreiben</h3>
             <p>
               Integrierter CodeMirror-6-Editor direkt auf der eigenen <code>.md</code>-Arbeitsdatei — begleitet vom Live-Schizo-Cockpit.
@@ -306,12 +308,12 @@
             <path d="M 55 196 C 148 118, 224 128, 336 72" stroke="var(--curve-soft)" stroke-width="1" />
           </svg>
           <div>
-            <h3>Das Schizo-Prinzip: gleichberechtigte Perspektiven ohne Hauptstimme</h3>
+            <h3>Das Schizo-Prinzip: Mehrperspektivität ohne Hauptstimme</h3>
             <p>
-              Statt Wissen in eine einzige starre Hierarchie zu pressen, betrachtet Chattelkasten denselben Bestand
+              Statt Wissen in eine einzige starre Hierarchie zu pressen, erschließt Chattelkasten denselben Bestand
               über mehrere gleichberechtigte analytische Raster. Wenn ein Zettel aus einer anderen Perspektive eine
               starke Verbindung aufweist, markiert ihn die Anwendung symmetrisch als <strong>Außenbrücke (<code>◌</code>)</strong> —
-              so werden produktive Spannungen sichtbar statt geglättet.
+              so werden produktive Spannungen sichtbar, statt in einer einzelnen Perspektive geglättet zu werden.
             </p>
           </div>
           <div class="voice-pills" aria-label="Beispielhafte Schizo-Perspektiven">
@@ -326,30 +328,31 @@
       </div>
     </section>
 
-    <!-- Section 2: Transparency & Academic Integrity (pure white band) -->
+    <!-- Section 2: Epistemic Transparency & Principles (pure white band) -->
     <section class="block" id="transparenz">
       <div class="wrap">
-        <p class="section-kicker">02 · Wissenschaftliche Integrität</p>
-        <h2 class="section-title">Transparenz, Herkunft und Datenschutz als feste Software-Regeln</h2>
+        <p class="section-kicker">02 · Epistemische Transparenz</p>
+        <h2 class="section-title">Kognitive Erweiterung statt Blackbox-Automation</h2>
         <p class="section-intro">
-          Zentrales Entwurfsziel von Chattelkasten ist es, den Einsatz digitaler und KI-gestützter Werkzeuge
-          im wissenschaftlichen Arbeiten <strong>nachvollziehbar, abgrenzbar und prüfbar</strong> zu machen — statt
-          Autorschaft zu verwischen.
+          Ein transhumanistisches Forschungswerkzeug verdient Vertrauen nur dann, wenn seine Grenzen, Quellen
+          und Eingriffe jederzeit sichtbar bleiben. Herkunft, Kritik und Datenschutz sind deshalb als feste
+          Software-Regeln verankert.
         </p>
 
         <div class="cards-2">
           <article class="card">
-            <div class="card-num">GARANTIE A</div>
-            <h3>Durchgängige Herkunftsmarkierung</h3>
+            <div class="card-num">PRINZIP 01</div>
+            <h3>Durchgängige Herkunft statt getrennter Klassen</h3>
             <p>
-              Jeder Zettel im Kasten trägt sichtbar seine Herkunft (<code>ich</code>, <code>gemeinsam</code>,
-              <code>quelle</code> oder <code>unklar</code>) sowie den Prüfstatus von Literatur- und Autorenangaben
-              (<code>✓</code> geprüft / <code>○</code> ungeprüft). Quellenarbeit und eigene Gedanken bleiben jederzeit unterscheidbar.
+              Alle Zettel leben im selben offenen Bestand und unterscheiden sich über ihre explizite Herkunft
+              (<code>ich</code>, <code>gemeinsam</code>, <code>quelle</code> oder <code>unklar</code>) sowie den
+              Prüfstatus von Literatur- und Autorenangaben (<code>✓</code> geprüft / <code>○</code> ungeprüft).
+              Eigene Gedanken, Quellenarbeit und Dialogergebnisse bleiben jederzeit klar nachvollziehbar.
             </p>
           </article>
 
           <article class="card">
-            <div class="card-num">GARANTIE B</div>
+            <div class="card-num">PRINZIP 02</div>
             <h3>Kein stilles Ghostwriting, kein „Ent-KI-Lektorat“</h3>
             <p>
               Die Anwendung generiert niemals unbemerkt Text im Hintergrund und schließt jede Funktion zur
@@ -360,7 +363,7 @@
           </article>
 
           <article class="card">
-            <div class="card-num">GARANTIE C</div>
+            <div class="card-num">PRINZIP 03</div>
             <h3>Kontext-Chips &amp; projektbezogene <code>entscheidungen.md</code></h3>
             <p>
               Der optionale Fenster-Assistent (<code>⌘J</code>) arbeitet strikt beratend und zeigt vor jeder Anfrage
@@ -370,10 +373,10 @@
           </article>
 
           <article class="card">
-            <div class="card-num">GARANTIE D</div>
+            <div class="card-num">PRINZIP 04</div>
             <h3>Fail-Closed-Datenschutz (<code>privacy.rs</code>)</h3>
             <p>
-              Sensible Ordner und als <code>privat: true</code> markierte Notizen werden serverseitig im Rust-Backend
+              Sensible Ordner und als <code>privat: true</code> markierte Zettel werden serverseitig im Rust-Backend
               vor Cloud-KI-APIs, MCP-Servern und Projekt-Briefings blockiert. Jeder Kontakt löst eine sichtbare
               Benachrichtigung aus; Multi-Kasten-Profile können Sperren niemals abschwächen.
             </p>
@@ -465,11 +468,11 @@
       </div>
     </section>
 
-    <!-- Section 4: Academic Declaration Context (pure white band) -->
-    <section class="block" id="selbststaendigkeit">
+    <!-- Section 4: Scientific Context & Presentation (pure white band) -->
+    <section class="block" id="einordnung">
       <div class="wrap">
-        <p class="section-kicker">04 · Einordnung für Prüfende</p>
-        <h2 class="section-title">Verweis im Rahmen einer Selbstständigkeitserklärung</h2>
+        <p class="section-kicker">04 · Wissenschaftlicher Kontext</p>
+        <h2 class="section-title">Einordnung, Entstehung &amp; persönliche Vorstellung</h2>
 
         <div class="declaration-shell">
           <div class="declaration-box">
@@ -478,25 +481,27 @@
               <path d="M 74 198 C 164 134, 232 118, 338 74" stroke="var(--curve-soft)" stroke-width="1" />
               <circle cx="212" cy="116" r="3.5" fill="var(--bg-canvas)" stroke="var(--curve-stroke)" stroke-width="1.2" />
             </svg>
-            <h3>Dokumentation des Werkzeugs &amp; der Mensch-KI-Zusammenarbeit</h3>
+            <h3>Rolle im wissenschaftlichen Arbeitsprozess &amp; Mensch-KI-Entwicklung</h3>
             <p>
-              Diese Seite dokumentiert das eigenständig konzipierte und in iterativer Mensch-KI-Zusammenarbeit
-              entwickelte Softwareprojekt <strong>Chattelkasten</strong> (Stand <code>v0.1.1</code>, November 2026)
-              als transparenten Referenzpunkt für wissenschaftliche Arbeiten, in denen das Werkzeug zur
-              Wissensorganisation, Literatur- und Begriffsarbeit oder Schreibbegleitung eingesetzt wurde.
+              <strong>Chattelkasten</strong> (Stand <code>v0.1.1</code>, November 2026) ist ein eigenständig
+              konzipiertes und in iterativer Mensch-KI-Zusammenarbeit entwickeltes Forschungswerkzeug. Diese
+              Seite dokumentiert seine Funktionsweise und methodischen Leitlinien als transparenten Referenzpunkt
+              für wissenschaftliche Arbeiten, in denen die Umgebung zur Wissensorganisation, Begriffs- und
+              Literaturarbeit sowie zur kritischen Schreibbegleitung genutzt wurde.
             </p>
             <p>
-              Chattelkasten ist als Arbeits-, Strukturierungs- und Reflexionsumgebung entworfen: Die Auswahl von
-              Fragestellungen, die Bewertung von Quellen und Widersprüchen, getroffene Gliederungsentscheidungen
-              (<code>entscheidungen.md</code>) sowie die eigenständige wissenschaftliche Urteilsbildung und
-              Textverfassung verbleiben vollständig bei der schreibenden Person. Wo KI-Modelle beratend
-              (z. B. im Zettel-Sparring oder durch den Inline-Kritiker) hinzugezogen werden, geschieht dies
-              explizit ausgelöst, datenschutzgefiltert und unter klarer Herkunftsmarkierung.
+              Im Forschungs- und Schreibprozess dient Chattelkasten der Erweiterung von Übersicht, Perspektivwechsel
+              und kritischer Prüfung: Die Wahl der Fragestellung, die Bewertung von Quellen und Widersprüchen,
+              dokumentierte Struktur- und Theorieentscheidungen (<code>entscheidungen.md</code>) sowie die
+              eigenständige wissenschaftliche Urteilsbildung und Textverfassung verbleiben vollständig bei der
+              schreibenden Person. Wo KI-Modelle beratend (etwa im Zettel-Sparring oder durch den Inline-Kritiker)
+              hinzugezogen werden, geschieht dies explizit ausgelöst, datenschutzgefiltert und unter klarer
+              Herkunftsmarkierung.
             </p>
             <p>
-              Auch die Entwicklung der Software selbst erfolgte transparent im Zusammenspiel aus menschlicher
-              Konzeption, Architektur-Spezifikationen, kritischen Review-Zyklen und KI-gestützter Implementierung
-              sowie automatisierter Verifikation.
+              Auch die Software selbst entstand transparent im Zusammenspiel aus menschlicher Konzeption,
+              Architektur-Spezifikationen, kritischen Review-Zyklen sowie KI-gestützter Implementierung und
+              automatisierter Verifikation.
             </p>
 
             <div class="meta-grid">
@@ -508,7 +513,7 @@
               <div class="meta-item">
                 <strong>Projektstand &amp; Codebasis</strong>
                 Desktop-App (<code>chattelkasten-app</code>, Stand <code>v0.1.1</code>) und lokales
-                Analyse-Backend (<code>czk</code>) liegen in privaten Repositories.
+                Analyse-Backend (<code>czk</code>) befinden sich in privater Entwicklung.
               </div>
             </div>
           </div>
