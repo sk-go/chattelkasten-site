@@ -16,11 +16,11 @@
     <div class="wrap header-inner">
       <a class="brand" href="#top">
         <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none">
-            <circle cx="9.2" cy="9.8" r="5.2" stroke="currentColor" stroke-width="1.5" opacity="0.72" />
-            <circle cx="14.8" cy="10.2" r="5.2" stroke="currentColor" stroke-width="1.5" opacity="0.48" />
-            <circle cx="12" cy="14.8" r="5.2" stroke="currentColor" stroke-width="1.5" opacity="0.34" />
-            <circle cx="12" cy="11.6" r="1.4" fill="currentColor" />
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
+            <circle cx="12.5" cy="13" r="6.2" stroke="currentColor" stroke-opacity="0.52" stroke-width="1.8" />
+            <circle cx="19.5" cy="13.5" r="6.2" stroke="currentColor" stroke-opacity="0.38" stroke-width="1.8" />
+            <circle cx="16" cy="19.5" r="6.2" stroke="currentColor" stroke-opacity="0.65" stroke-width="1.8" />
+            <circle cx="16" cy="15.7" r="1.8" fill="currentColor" fill-opacity="0.78" />
           </svg>
         </span>
         <span>Chattelkasten</span>
@@ -41,34 +41,34 @@
 
   <main id="top">
     <section class="hero">
-      <!-- Subtile Bezier-Kurven im Hintergrund -->
-      <svg class="hero-curves" viewBox="0 0 1440 720" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M -60 110 C 310 15, 580 265, 980 150 C 1190 90, 1340 120, 1500 72" fill="none" stroke="var(--curve-stroke)" stroke-width="1.2" />
-        <path d="M -60 220 C 280 340, 670 110, 1080 235 C 1250 286, 1360 250, 1500 215" fill="none" stroke="var(--curve-stroke-soft)" stroke-width="1" />
-        <path d="M -60 440 C 360 365, 760 540, 1180 410 C 1320 365, 1410 385, 1500 360" fill="none" stroke="var(--curve-stroke-soft)" stroke-width="1" />
-        <circle cx="980" cy="150" r="3.5" fill="var(--surface-0)" stroke="var(--curve-stroke)" stroke-width="1.2" />
-        <circle cx="1080" cy="235" r="3" fill="var(--surface-0)" stroke="var(--curve-stroke)" stroke-width="1.2" />
+      <!-- Subtile architektonische Bezier-Kurven im Hintergrund -->
+      <svg class="hero-curves" viewBox="0 0 1440 540" preserveAspectRatio="xMidYMin slice" fill="none" aria-hidden="true">
+        <path d="M -80 96 C 240 48, 480 228, 860 156 C 1140 102, 1300 40, 1520 88" stroke="var(--curve-stroke)" stroke-width="1.2" />
+        <path d="M -60 224 C 280 284, 540 94, 920 202 C 1180 276, 1320 218, 1520 176" stroke="var(--curve-soft)" stroke-width="1.1" />
+        <path d="M 110 -20 C 310 140, 590 296, 980 274 C 1220 260, 1360 326, 1500 398" stroke="var(--curve-accent)" stroke-width="1.15" />
+        <path d="M -40 364 C 290 318, 620 402, 1020 340 C 1240 306, 1370 342, 1520 320" stroke="var(--curve-soft)" stroke-width="1" />
+        <circle cx="860" cy="156" r="4.5" fill="var(--bg-canvas)" stroke="var(--curve-stroke)" stroke-width="1.3" />
+        <circle cx="980" cy="274" r="5" fill="var(--bg-canvas)" stroke="var(--curve-accent)" stroke-width="1.3" />
+        <circle cx="520" cy="176" r="3.5" fill="var(--bg-canvas)" stroke="var(--curve-stroke)" stroke-width="1.2" />
       </svg>
 
       <div class="wrap">
-        <div class="hero-top">
-          <div class="eyebrow">
-            <span class="eyebrow-dot" aria-hidden="true"></span>
-            <span>Local-First Desktop-App · Tauri 2 · Rust · TypeScript</span>
-          </div>
-          <h1>Wissenschaftliche Wissensarbeit mit expliziter Herkunft.</h1>
-          <p class="hero-lead">
-            <strong>Chattelkasten</strong> ist eine eigenständig entwickelte, lokale Desktop-Anwendung für einen
-            vereinheitlichten Markdown-Zettelkasten aus eigenen Notizen, Literaturreferenzen, Projekten und
-            dokumentierten KI-Dialogen — mit mehrperspektivischem Hypergraph, projektbezogenem Entscheidungslog
-            und harter Trennung zwischen eigener Textverfassung und transparenter KI-Assistenz.
-          </p>
+        <div class="eyebrow">
+          <span class="eyebrow-dot" aria-hidden="true"></span>
+          Local-First Desktop-App · Tauri 2 · Rust · TypeScript
+        </div>
+        <h1>Wissenschaftliche Wissensarbeit mit expliziter Herkunft.</h1>
+        <p class="hero-lead">
+          <strong>Chattelkasten</strong> ist eine eigenständig entwickelte, lokale Desktop-Anwendung für einen
+          vereinheitlichten Markdown-Zettelkasten aus eigenen Notizen, Literaturreferenzen, Projekten und
+          dokumentierten KI-Dialogen — mit mehrperspektivischem Hypergraph, projektbezogenem Entscheidungslog
+          und harter Trennung zwischen eigener Textverfassung und transparenter KI-Assistenz.
+        </p>
 
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#selbststaendigkeit">Hinweis zur Selbstständigkeitserklärung</a>
-            <a class="btn" href="#transparenz">KI-Ethik &amp; Provenienz</a>
-            <a class="btn" href="#architektur">Technische Architektur</a>
-          </div>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#selbststaendigkeit">Hinweis zur Selbstständigkeitserklärung</a>
+          <a class="btn" href="#transparenz">KI-Ethik &amp; Provenienz</a>
+          <a class="btn" href="#architektur">Technische Architektur</a>
         </div>
 
         <div class="metrics" aria-label="Projektkennzahlen">
@@ -172,30 +172,32 @@
                 <div class="preview-grid">
                   <div class="mock-card">
                     <h4>Projekt-Hypergraph (Bubble Sets, Brücken &amp; Spannungen)</h4>
-                    <svg class="hypergraph-svg" viewBox="0 0 460 230" role="img" aria-label="Schematische Darstellung eines Hypergraphen mit Kapitel-Membranen, geteilten Zetteln, Außenbrücke und Widerspruchsbogen">
-                      <!-- Subtle low-contrast membranes -->
-                      <ellipse cx="148" cy="108" rx="108" ry="72" fill="rgba(61, 90, 128, 0.055)" stroke="rgba(61, 90, 128, 0.34)" stroke-width="1.35" />
-                      <ellipse cx="304" cy="102" rx="112" ry="74" fill="rgba(45, 106, 79, 0.055)" stroke="rgba(45, 106, 79, 0.34)" stroke-width="1.35" />
-                      <ellipse cx="228" cy="162" rx="106" ry="50" fill="rgba(138, 97, 22, 0.055)" stroke="rgba(138, 97, 22, 0.34)" stroke-width="1.35" />
-                      <!-- Subtle conflict arc -->
-                      <path d="M 110 86 Q 225 24 336 86" fill="none" stroke="rgba(158, 58, 58, 0.55)" stroke-width="1.4" stroke-dasharray="4 4" />
-                      <text x="224" y="42" text-anchor="middle" font-size="10.5" font-weight="500" fill="var(--err)">⚡ Widerspruch (Modellurteil)</text>
-                      <!-- Outer bridge -->
-                      <path d="M 226 112 Q 312 135 394 186" fill="none" stroke="rgba(61, 90, 128, 0.45)" stroke-width="1.3" stroke-dasharray="3 3" />
-                      <circle cx="394" cy="186" r="6" fill="var(--surface-0)" stroke="var(--accent)" stroke-width="1.6" />
-                      <text x="386" y="210" text-anchor="middle" font-size="10" fill="var(--fg-muted)">◌ Außenbrücke (Motiv)</text>
-                      <!-- Nodes -->
-                      <circle cx="110" cy="86" r="5.5" fill="var(--surface-0)" stroke="var(--accent)" stroke-width="2" />
-                      <circle cx="152" cy="138" r="5" fill="var(--surface-0)" stroke="var(--accent)" stroke-width="1.8" />
-                      <circle cx="226" cy="112" r="6.5" fill="var(--fg)" stroke="var(--surface-0)" stroke-width="2.5" />
-                      <circle cx="336" cy="86" r="5.5" fill="var(--surface-0)" stroke="var(--ok)" stroke-width="2" />
-                      <circle cx="294" cy="148" r="5" fill="var(--surface-0)" stroke="var(--warn)" stroke-width="1.8" />
-                      <circle cx="212" cy="176" r="5" fill="var(--surface-0)" stroke="var(--warn)" stroke-width="1.8" />
+                    <svg class="hypergraph-svg" viewBox="0 0 460 232" role="img" aria-label="Schematische Darstellung eines Hypergraphen mit Kapitel-Membranen, geteilten Zetteln, Außenbrücke und Widerspruchsbogen">
+                      <!-- Subtile Hintergrundkurven -->
+                      <path d="M 16 178 C 120 144, 240 198, 444 134" fill="none" stroke="var(--curve-soft)" stroke-width="1" />
+                      <!-- Feine, kontrastarme Membranen -->
+                      <ellipse cx="148" cy="108" rx="108" ry="70" fill="var(--accent-soft)" stroke="var(--accent-border)" stroke-width="1.4" />
+                      <ellipse cx="304" cy="104" rx="112" ry="72" fill="var(--ok-bg)" stroke="var(--ok-border)" stroke-width="1.4" />
+                      <ellipse cx="228" cy="162" rx="106" ry="48" fill="var(--warn-bg)" stroke="var(--warn-border)" stroke-width="1.4" />
+                      <!-- Widerspruchsbogen -->
+                      <path d="M 110 86 Q 225 22 336 86" fill="none" stroke="var(--err)" stroke-opacity="0.62" stroke-width="1.5" stroke-dasharray="4 4" />
+                      <text x="224" y="42" text-anchor="middle" font-size="10.8" font-weight="500" fill="var(--err)">⚡ Widerspruch (Modellurteil)</text>
+                      <!-- Außenbrücke -->
+                      <path d="M 226 112 Q 312 138 394 188" fill="none" stroke="var(--accent)" stroke-opacity="0.5" stroke-width="1.3" stroke-dasharray="3 3" />
+                      <circle cx="394" cy="188" r="6" fill="var(--bg-canvas)" stroke="var(--accent)" stroke-opacity="0.68" stroke-width="1.6" />
+                      <text x="382" y="212" text-anchor="middle" font-size="10.2" fill="var(--fg-muted)">◌ Außenbrücke (Motiv)</text>
+                      <!-- Knoten -->
+                      <circle cx="110" cy="86" r="5.5" fill="var(--bg-canvas)" stroke="var(--accent)" stroke-width="2" />
+                      <circle cx="152" cy="138" r="5" fill="var(--bg-canvas)" stroke="var(--accent)" stroke-width="1.8" />
+                      <circle cx="226" cy="112" r="7" fill="var(--fg)" stroke="var(--bg-canvas)" stroke-width="2.5" />
+                      <circle cx="336" cy="86" r="5.5" fill="var(--bg-canvas)" stroke="var(--ok)" stroke-width="2" />
+                      <circle cx="294" cy="148" r="5" fill="var(--bg-canvas)" stroke="var(--warn)" stroke-width="1.8" />
+                      <circle cx="212" cy="176" r="5" fill="var(--bg-canvas)" stroke="var(--warn)" stroke-width="1.8" />
                       <!-- Labels -->
-                      <text x="80" y="64" font-size="10.5" font-weight="500" fill="var(--accent)">1 · Begriff</text>
-                      <text x="310" y="62" font-size="10.5" font-weight="500" fill="var(--ok)">2 · Kritik</text>
-                      <text x="192" y="201" font-size="10.5" font-weight="500" fill="var(--warn)">3 · Synthese</text>
-                      <text x="226" y="131" text-anchor="middle" font-size="10" font-weight="500" fill="var(--fg-soft)">Geteilter Zettel</text>
+                      <text x="80" y="64" font-size="10.8" font-weight="500" fill="var(--fg-soft)">1 · Begriff</text>
+                      <text x="312" y="62" font-size="10.8" font-weight="500" fill="var(--fg-soft)">2 · Kritik</text>
+                      <text x="192" y="201" font-size="10.8" font-weight="500" fill="var(--fg-soft)">3 · Synthese</text>
+                      <text x="226" y="131" text-anchor="middle" font-size="10.2" font-weight="500" fill="var(--fg)">Geteilter Zettel</text>
                     </svg>
                   </div>
 
@@ -216,7 +218,7 @@
                   <div class="mock-card editor-mock">
                     <h4>CodeMirror-6-Editor direkt auf lokaler .md-Datei</h4>
                     <p class="editor-heading">2.1 Autonomie im Umgang mit digitalen Werkzeugen</p>
-                    <p style="margin:0 0 10px;">
+                    <p style="margin:0 0 10px; color: var(--fg-soft);">
                       Ein Werkzeug bleibt nur dann bildungsförderlich, wenn seine operativen Grenzen sichtbar bleiben
                       und <span class="critic-mark" title="KI-Kritiker: Klarheit / Beleg prüfen">jeder Übergang zwischen eigener Urteilsbildung und maschineller Vorstrukturierung nachvollziehbar dokumentiert wird</span>.
                     </p>
@@ -244,25 +246,15 @@
       </div>
     </section>
 
-    <!-- Curved transition: mist -> white -->
-    <div class="band-divider band-mist" aria-hidden="true">
-      <svg viewBox="0 0 1440 36" preserveAspectRatio="none">
-        <path d="M0,14 C360,36 1080,0 1440,22 L1440,36 L0,36 Z" fill="var(--surface-0)" />
-        <path d="M0,14 C360,36 1080,0 1440,22" fill="none" stroke="var(--border-muted)" stroke-width="1" />
-      </svg>
-    </div>
-
-    <!-- Section: Workflow & Schizo -->
-    <section class="block band-white" id="arbeitsfluss">
+    <!-- Section 1: Workflow & Schizo (subtle mist band) -->
+    <section class="block band-subtle" id="arbeitsfluss">
       <div class="wrap">
-        <div class="section-head">
-          <p class="section-kicker"><span class="kicker-line" aria-hidden="true"></span>01 · Methode &amp; Arbeitsfluss</p>
-          <h2 class="section-title">Vom verstreuten Material zur strukturierten Arbeit — in drei ruhigen Räumen</h2>
-          <p class="section-intro">
-            Chattelkasten verbindet den offenen Zettelkasten mit einer fokussierten Projekt- und Schreibumgebung.
-            Alle Dateien bleiben jederzeit lesbares lokales Markdown; nichts wird in eine proprietäre Datenbank eingeschlossen.
-          </p>
-        </div>
+        <p class="section-kicker">01 · Methode &amp; Arbeitsfluss</p>
+        <h2 class="section-title">Vom verstreuten Material zur strukturierten Arbeit — in drei ruhigen Räumen</h2>
+        <p class="section-intro">
+          Chattelkasten verbindet den offenen Zettelkasten mit einer fokussierten Projekt- und Schreibumgebung.
+          Alle Dateien bleiben jederzeit lesbares lokales Markdown; nichts wird in eine proprietäre Datenbank eingeschlossen.
+        </p>
 
         <div class="cards-3">
           <article class="card">
@@ -309,6 +301,10 @@
         </div>
 
         <div class="schizo-banner">
+          <svg class="card-curve-bg" viewBox="0 0 340 200" fill="none" aria-hidden="true">
+            <path d="M 10 180 C 90 120, 175 156, 330 24" stroke="var(--curve-stroke)" stroke-width="1.1" />
+            <path d="M 55 196 C 148 118, 224 128, 336 72" stroke="var(--curve-soft)" stroke-width="1" />
+          </svg>
           <div>
             <h3>Das Schizo-Prinzip: gleichberechtigte Perspektiven ohne Hauptstimme</h3>
             <p>
@@ -330,26 +326,16 @@
       </div>
     </section>
 
-    <!-- Curved transition: white -> mist -->
-    <div class="band-divider band-white" aria-hidden="true">
-      <svg viewBox="0 0 1440 36" preserveAspectRatio="none">
-        <path d="M0,22 C420,0 1020,36 1440,12 L1440,36 L0,36 Z" fill="var(--surface-2)" />
-        <path d="M0,22 C420,0 1020,36 1440,12" fill="none" stroke="var(--border-muted)" stroke-width="1" />
-      </svg>
-    </div>
-
-    <!-- Section: Transparency & Academic Integrity -->
-    <section class="block band-mist" id="transparenz">
+    <!-- Section 2: Transparency & Academic Integrity (pure white band) -->
+    <section class="block" id="transparenz">
       <div class="wrap">
-        <div class="section-head">
-          <p class="section-kicker"><span class="kicker-line" aria-hidden="true"></span>02 · Wissenschaftliche Integrität</p>
-          <h2 class="section-title">Transparenz, Herkunft und Datenschutz als feste Software-Regeln</h2>
-          <p class="section-intro">
-            Zentrales Entwurfsziel von Chattelkasten ist es, den Einsatz digitaler und KI-gestützter Werkzeuge
-            im wissenschaftlichen Arbeiten <strong>nachvollziehbar, abgrenzbar und prüfbar</strong> zu machen — statt
-            Autorschaft zu verwischen.
-          </p>
-        </div>
+        <p class="section-kicker">02 · Wissenschaftliche Integrität</p>
+        <h2 class="section-title">Transparenz, Herkunft und Datenschutz als feste Software-Regeln</h2>
+        <p class="section-intro">
+          Zentrales Entwurfsziel von Chattelkasten ist es, den Einsatz digitaler und KI-gestützter Werkzeuge
+          im wissenschaftlichen Arbeiten <strong>nachvollziehbar, abgrenzbar und prüfbar</strong> zu machen — statt
+          Autorschaft zu verwischen.
+        </p>
 
         <div class="cards-2">
           <article class="card">
@@ -435,25 +421,15 @@
       </div>
     </section>
 
-    <!-- Curved transition: mist -> white -->
-    <div class="band-divider band-mist" aria-hidden="true">
-      <svg viewBox="0 0 1440 36" preserveAspectRatio="none">
-        <path d="M0,12 C380,34 1060,2 1440,24 L1440,36 L0,36 Z" fill="var(--surface-0)" />
-        <path d="M0,12 C380,34 1060,2 1440,24" fill="none" stroke="var(--border-muted)" stroke-width="1" />
-      </svg>
-    </div>
-
-    <!-- Section: Architecture -->
-    <section class="block band-white" id="architektur">
+    <!-- Section 3: Architecture (subtle mist band) -->
+    <section class="block band-subtle" id="architektur">
       <div class="wrap">
-        <div class="section-head">
-          <p class="section-kicker"><span class="kicker-line" aria-hidden="true"></span>03 · Technische Architektur</p>
-          <h2 class="section-title">Schlanker Desktop-Kern in Rust &amp; TypeScript</h2>
-          <p class="section-intro">
-            Chattelkasten trennt Oberfläche, Sicherheits-/Dateischicht und semantisches Analyse-Backend über
-            klar typisierte Schnittstellen. Alle Kernpfade sind durch automatisierte Tests abgesichert.
-          </p>
-        </div>
+        <p class="section-kicker">03 · Technische Architektur</p>
+        <h2 class="section-title">Schlanker Desktop-Kern in Rust &amp; TypeScript</h2>
+        <p class="section-intro">
+          Chattelkasten trennt Oberfläche, Sicherheits-/Dateischicht und semantisches Analyse-Backend über
+          klar typisierte Schnittstellen. Alle Kernpfade sind durch automatisierte Tests abgesichert.
+        </p>
 
         <div class="arch-stack">
           <div class="arch-layer">
@@ -489,54 +465,51 @@
       </div>
     </section>
 
-    <!-- Curved transition: white -> whisper -->
-    <div class="band-divider band-white" aria-hidden="true">
-      <svg viewBox="0 0 1440 36" preserveAspectRatio="none">
-        <path d="M0,24 C440,4 1000,34 1440,14 L1440,36 L0,36 Z" fill="var(--surface-2)" />
-        <path d="M0,24 C440,4 1000,34 1440,14" fill="none" stroke="var(--border-muted)" stroke-width="1" />
-      </svg>
-    </div>
-
-    <!-- Section: Academic Declaration Context -->
-    <section class="block band-mist" id="selbststaendigkeit">
+    <!-- Section 4: Academic Declaration Context (pure white band) -->
+    <section class="block" id="selbststaendigkeit">
       <div class="wrap">
-        <div class="section-head">
-          <p class="section-kicker"><span class="kicker-line" aria-hidden="true"></span>04 · Einordnung für Prüfende</p>
-          <h2 class="section-title">Verweis im Rahmen einer Selbstständigkeitserklärung</h2>
-        </div>
+        <p class="section-kicker">04 · Einordnung für Prüfende</p>
+        <h2 class="section-title">Verweis im Rahmen einer Selbstständigkeitserklärung</h2>
 
-        <div class="declaration-box">
-          <h3>Dokumentation des Werkzeugs &amp; der Mensch-KI-Zusammenarbeit</h3>
-          <p>
-            Diese Seite dokumentiert das eigenständig konzipierte und in iterativer Mensch-KI-Zusammenarbeit
-            entwickelte Softwareprojekt <strong>Chattelkasten</strong> (Stand <code>v0.1.1</code>, November 2026)
-            als transparenten Referenzpunkt für wissenschaftliche Arbeiten, in denen das Werkzeug zur
-            Wissensorganisation, Literatur- und Begriffsarbeit oder Schreibbegleitung eingesetzt wurde.
-          </p>
-          <p>
-            Chattelkasten ist als Arbeits-, Strukturierungs- und Reflexionsumgebung entworfen: Die Auswahl von
-            Fragestellungen, die Bewertung von Quellen und Widersprüchen, getroffene Gliederungsentscheidungen
-            (<code>entscheidungen.md</code>) sowie die eigenständige wissenschaftliche Urteilsbildung und
-            Textverfassung verbleiben vollständig bei der schreibenden Person. Wo KI-Modelle beratend
-            (z. B. im Zettel-Sparring oder durch den Inline-Kritiker) hinzugezogen werden, geschieht dies
-            explizit ausgelöst, datenschutzgefiltert und unter klarer Herkunftsmarkierung.
-          </p>
-          <p>
-            Auch die Entwicklung der Software selbst erfolgte transparent im Zusammenspiel aus menschlicher
-            Konzeption, Architektur-Spezifikationen, kritischen Review-Zyklen und KI-gestützter Implementierung
-            sowie automatisierter Verifikation.
-          </p>
+        <div class="declaration-shell">
+          <div class="declaration-box">
+            <svg class="card-curve-bg" viewBox="0 0 340 200" fill="none" aria-hidden="true">
+              <path d="M 18 188 C 110 132, 188 144, 336 18" stroke="var(--curve-stroke)" stroke-width="1.1" />
+              <path d="M 74 198 C 164 134, 232 118, 338 74" stroke="var(--curve-soft)" stroke-width="1" />
+              <circle cx="212" cy="116" r="3.5" fill="var(--bg-canvas)" stroke="var(--curve-stroke)" stroke-width="1.2" />
+            </svg>
+            <h3>Dokumentation des Werkzeugs &amp; der Mensch-KI-Zusammenarbeit</h3>
+            <p>
+              Diese Seite dokumentiert das eigenständig konzipierte und in iterativer Mensch-KI-Zusammenarbeit
+              entwickelte Softwareprojekt <strong>Chattelkasten</strong> (Stand <code>v0.1.1</code>, November 2026)
+              als transparenten Referenzpunkt für wissenschaftliche Arbeiten, in denen das Werkzeug zur
+              Wissensorganisation, Literatur- und Begriffsarbeit oder Schreibbegleitung eingesetzt wurde.
+            </p>
+            <p>
+              Chattelkasten ist als Arbeits-, Strukturierungs- und Reflexionsumgebung entworfen: Die Auswahl von
+              Fragestellungen, die Bewertung von Quellen und Widersprüchen, getroffene Gliederungsentscheidungen
+              (<code>entscheidungen.md</code>) sowie die eigenständige wissenschaftliche Urteilsbildung und
+              Textverfassung verbleiben vollständig bei der schreibenden Person. Wo KI-Modelle beratend
+              (z. B. im Zettel-Sparring oder durch den Inline-Kritiker) hinzugezogen werden, geschieht dies
+              explizit ausgelöst, datenschutzgefiltert und unter klarer Herkunftsmarkierung.
+            </p>
+            <p>
+              Auch die Entwicklung der Software selbst erfolgte transparent im Zusammenspiel aus menschlicher
+              Konzeption, Architektur-Spezifikationen, kritischen Review-Zyklen und KI-gestützter Implementierung
+              sowie automatisierter Verifikation.
+            </p>
 
-          <div class="meta-grid">
-            <div class="meta-item">
-              <strong>Vorstellung auf Anfrage</strong>
-              Auf Anfrage stelle ich das Werkzeug gerne persönlich vor — inklusive praktischer Demonstration
-              des Arbeitsflusses sowie Einsicht in Architektur, Tests und Quellcode.
-            </div>
-            <div class="meta-item">
-              <strong>Projektstand &amp; Codebasis</strong>
-              Desktop-App (<code>chattelkasten-app</code>, Stand <code>v0.1.1</code>) und lokales
-              Analyse-Backend (<code>czk</code>) liegen in privaten Repositories.
+            <div class="meta-grid">
+              <div class="meta-item">
+                <strong>Vorstellung auf Anfrage</strong>
+                Auf Anfrage stelle ich das Werkzeug gerne persönlich vor — inklusive praktischer Demonstration
+                des Arbeitsflusses sowie Einsicht in Architektur, Tests und Quellcode.
+              </div>
+              <div class="meta-item">
+                <strong>Projektstand &amp; Codebasis</strong>
+                Desktop-App (<code>chattelkasten-app</code>, Stand <code>v0.1.1</code>) und lokales
+                Analyse-Backend (<code>czk</code>) liegen in privaten Repositories.
+              </div>
             </div>
           </div>
         </div>
