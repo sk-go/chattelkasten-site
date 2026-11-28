@@ -1,580 +1,843 @@
 <!DOCTYPE html>
-<html lang="de" data-theme="light">
+<html lang="de" data-theme="dark">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chattelkasten — Transhumanistisches Forschungswerkzeug &amp; Local-First Zettelkasten</title>
-  <meta
-    name="description"
-    content="Chattelkasten ist ein eigenständig entwickeltes, lokales transhumanistisches Forschungswerkzeug (Tauri 2 + Rust + TypeScript): ein einheitlicher Markdown-Zettelkasten mit mehrperspektivischem Hypergraph, expliziter Herkunftsmarkierung und Fail-Closed-Datenschutz."
-  />
+  <title>Chattelkasten · Lokaler Zettelkasten mit Chat-Extraktion</title>
+  <meta name="description"
+    content="Chattelkasten ist ein selbst gebautes, lokales Forschungswerkzeug (Tauri 2, Rust und TypeScript): ein einheitlicher Markdown-Zettelkasten mit Chat-Extraktion, mehrperspektivischem Hypergraph, klarer Herkunftsmarkierung und Fail-Closed-Datenschutz." />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
+
 <body>
-  <header class="site-header">
-    <div class="wrap header-inner">
-      <a class="brand" href="#top">
-        <span class="brand-mark" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
-            <circle cx="12.5" cy="13" r="6.2" stroke="currentColor" stroke-opacity="0.52" stroke-width="1.8" />
-            <circle cx="19.5" cy="13.5" r="6.2" stroke="currentColor" stroke-opacity="0.38" stroke-width="1.8" />
-            <circle cx="16" cy="19.5" r="6.2" stroke="currentColor" stroke-opacity="0.65" stroke-width="1.8" />
-            <circle cx="16" cy="15.7" r="1.8" fill="currentColor" fill-opacity="0.78" />
-          </svg>
-        </span>
-        <span>Chattelkasten</span>
-        <span class="brand-version">v0.1.1</span>
-      </a>
-      <nav class="nav-links" aria-label="Hauptnavigation">
-        <a href="#arbeitsfluss">Arbeitsräume</a>
-        <a href="#transparenz">Prinzipien</a>
-        <a href="#architektur">Architektur</a>
-        <a href="#einordnung">Kontext</a>
-        <button type="button" class="theme-btn" id="theme-toggle" aria-label="Farbschema umschalten">
-          <span id="theme-icon" aria-hidden="true">☾</span>
-          <span id="theme-label">Dunkel</span>
-        </button>
-      </nav>
+  <nav class="rahmen-nav" aria-label="Hauptnavigation">
+    <a class="marke" href="#top">
+      <span class="marke-kuerzel" aria-hidden="true">CK</span>
+      <span>Chattelkasten</span>
+    </a>
+    <ul>
+      <li><a href="#ablauf">01 Ablauf</a></li>
+      <li><a href="#perspektiven">02 Perspektiven</a></li>
+      <li><a href="#raeume">03 Arbeitsräume</a></li>
+      <li><a href="#grenzen">04 Grenzen</a></li>
+      <li><a href="#aufbau">05 Aufbau</a></li>
+      <li><a href="#einordnung">06 Einordnung</a></li>
+    </ul>
+    <button type="button" class="thema-schalter" id="theme-toggle" aria-label="Hell und Dunkel umschalten">
+      <span aria-hidden="true">◐</span>
+      <span id="theme-label">Hell</span>
+    </button>
+  </nav>
+
+  <!-- Statisches Zellautomat-Band (Regel 30 Chaos / Regel 90 Fraktal, kein Autoplay) -->
+  <div class="automat-band" aria-label="Statisches Muster aus Regel 30 und Regel 90">
+    <div class="automat-leinwand-wrap">
+      <canvas id="automat-canvas" role="img"
+        aria-label="Elementarer Zellautomat, links Regel 30 als deterministisches Chaos und rechts Regel 90 als Fraktal"></canvas>
     </div>
-  </header>
+    <div class="automat-werkzeug" role="group" aria-label="Zellautomat-Ansicht wählen">
+      <button type="button" class="automat-btn is-active" data-rule="split">R30 / R90</button>
+      <button type="button" class="automat-btn" data-rule="30">Regel 30</button>
+      <button type="button" class="automat-btn" data-rule="90">Regel 90</button>
+      <button type="button" class="automat-btn automat-btn-step" id="automat-step" title="Eine Generation weiterschalten">+1</button>
+    </div>
+  </div>
 
   <main id="top">
-    <section class="hero">
-      <!-- Subtile architektonische Bezier-Kurven im Hintergrund -->
-      <svg class="hero-curves" viewBox="0 0 1440 540" preserveAspectRatio="xMidYMin slice" fill="none" aria-hidden="true">
-        <path d="M -80 96 C 240 48, 480 228, 860 156 C 1140 102, 1300 40, 1520 88" stroke="var(--curve-stroke)" stroke-width="1.2" />
-        <path d="M -60 224 C 280 284, 540 94, 920 202 C 1180 276, 1320 218, 1520 176" stroke="var(--curve-soft)" stroke-width="1.1" />
-        <path d="M 110 -20 C 310 140, 590 296, 980 274 C 1220 260, 1360 326, 1500 398" stroke="var(--curve-accent)" stroke-width="1.15" />
-        <path d="M -40 364 C 290 318, 620 402, 1020 340 C 1240 306, 1370 342, 1520 320" stroke="var(--curve-soft)" stroke-width="1" />
-        <circle cx="860" cy="156" r="4.5" fill="var(--bg-canvas)" stroke="var(--curve-stroke)" stroke-width="1.3" />
-        <circle cx="980" cy="274" r="5" fill="var(--bg-canvas)" stroke="var(--curve-accent)" stroke-width="1.3" />
-        <circle cx="520" cy="176" r="3.5" fill="var(--bg-canvas)" stroke="var(--curve-stroke)" stroke-width="1.2" />
-      </svg>
-
-      <div class="wrap">
-        <div class="eyebrow">
-          <span class="eyebrow-dot" aria-hidden="true"></span>
-          Transhumanistisches Forschungswerkzeug · Local-First · Tauri 2 &amp; Rust
-        </div>
-        <h1>Denken jenseits einer einzelnen Perspektive.</h1>
-        <p class="hero-lead">
-          <strong>Chattelkasten</strong> ist ein eigenständig entwickeltes, lokales
-          <strong>transhumanistisches Forschungswerkzeug</strong> — nicht als Ersatz menschlicher Urteilskraft,
-          sondern als ihre transparente Erweiterung. Es vereint eigene Gedanken, Literatur und dokumentierte
-          KI-Dialoge in einem einheitlichen Markdown-Zettelkasten mit gleichberechtigten Perspektiven,
-          visuellem Hypergraph und konsequenter Herkunftsmarkierung.
-        </p>
-
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#transparenz">Forschungsprinzipien</a>
-          <a class="btn" href="#arbeitsfluss">Arbeitsräume</a>
-          <a class="btn" href="#einordnung">Kontext &amp; Vorstellung</a>
-        </div>
-
-        <div class="metrics" aria-label="Projektkennzahlen">
-          <div class="metric">
-            <div class="metric-val">Einheitlicher Kasten</div>
-            <div class="metric-label">Alle Zettel als offene lokale Markdown-Dateien — ohne Sonderklassen, ohne Lock-in</div>
-          </div>
-          <div class="metric">
-            <div class="metric-val">Schizo-Perspektiven</div>
-            <div class="metric-label">Gleichberechtigte analytische Raster ohne Hauptstimme, mit Brücken (◌) und Spannungen (⚡)</div>
-          </div>
-          <div class="metric">
-            <div class="metric-val">Fail-Closed Privacy</div>
-            <div class="metric-label">Serverseitiger Rust-Filter sperrt sensible Bereiche strikt vor Cloud-APIs &amp; MCP</div>
-          </div>
-          <div class="metric">
-            <div class="metric-val">73 Tests grün</div>
-            <div class="metric-label">40 Rust- &amp; 33 TypeScript-Tests (Stand v0.1.1, inkl. Privacy- &amp; Graph-Audits)</div>
-          </div>
-        </div>
-
-        <!-- Interactive 3-Tab Studio Preview -->
-        <div class="studio-shell">
-          <div class="studio-frame" aria-label="Interaktive Vorschau der drei Arbeitsräume">
-            <div class="studio-titlebar">
-              <div class="traffic-lights" aria-hidden="true">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-              </div>
-
-              <div class="studio-tabs" role="tablist" aria-label="Arbeitsräume umschalten">
-                <button type="button" class="studio-tab" role="tab" aria-selected="true" data-tab="kasten">
-                  1 · Kasten
-                </button>
-                <button type="button" class="studio-tab" role="tab" aria-selected="false" data-tab="organisation">
-                  2 · Organisation
-                </button>
-                <button type="button" class="studio-tab" role="tab" aria-selected="false" data-tab="schreiben">
-                  3 · Schreiben
-                </button>
-              </div>
-
-              <div class="studio-badges">
-                <span class="pill">Perspektive: Begriff · Struktur · Motiv · Bild</span>
-                <span class="pill pill-ok">Datenschutz aktiv</span>
-              </div>
-            </div>
-
-            <div class="studio-body">
-              <!-- Panel 1: Kasten -->
-              <div class="studio-panel" data-panel="kasten">
-                <div class="preview-grid">
-                  <div class="mock-card">
-                    <h4>Einheitlicher Zettelbestand mit Herkunft &amp; Prüf-Eingang</h4>
-                    <div class="zettel-list">
-                      <div class="zettel-item">
-                        <div class="zettel-top">
-                          <span class="zettel-title">Bildung als Weltverhältnis statt Kompetenzliste</span>
-                          <span class="pill pill-ok">ich · geprüft ✓</span>
-                        </div>
-                        <p class="zettel-desc">
-                          Atomarer Zettel aus eigener Reflexion — trennt funktionale Qualifikation von transformativer Auseinandersetzung mit Widerstand.
-                        </p>
-                      </div>
-                      <div class="zettel-item">
-                        <div class="zettel-top">
-                          <span class="zettel-title">Rückkopplung zwischen Denkwerkzeug und Urteilskraft</span>
-                          <span class="pill pill-accent">gemeinsam · Dialog</span>
-                        </div>
-                        <p class="zettel-desc">
-                          Im Dialog geschärfter Zettel mit Verweis auf Primärquelle und offener Gegenfrage für das Zettel-Sparring.
-                        </p>
-                      </div>
-                      <div class="zettel-item">
-                        <div class="zettel-top">
-                          <span class="zettel-title">Prüf-Eingang (MCP): Vorschlag wartet auf Freigabe</span>
-                          <span class="pill pill-warn">Ideen/_Eingang/</span>
-                        </div>
-                        <p class="zettel-desc">
-                          Externe Agenten schreiben niemals direkt in den Kasten — jeder Vorschlag durchläuft das explizite Prüf-Gate.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="mock-card">
-                    <h4>Heimatbasis &amp; Kasten-Pflege</h4>
-                    <ul class="check-list">
-                      <li><strong>Multi-Kasten-Profile:</strong> Physisch getrennte Zettelkästen mit eigener Port-Zuordnung und strenger Datenschutz-Union.</li>
-                      <li><strong>Cluster-first Gesamt-Graph:</strong> Rendert auf Ebene 0 Bereiche &amp; Cluster (&lt; 100 ms Budget) und öffnet Zettel erst bei gezieltem Zoom.</li>
-                      <li><strong>Import &amp; Zettel-Sparring:</strong> Clippings und Chat-Exporte werden mit wählbarem Extraktions-Modell geprüft und vor dem Speichern geschärft.</li>
-                      <li><strong>Kontextsensitives Undo (⌘Z):</strong> Reversible Kasten-Aktionen lassen sich konfliktsicher rückgängig machen.</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Panel 2: Organisation -->
-              <div class="studio-panel" data-panel="organisation" hidden>
-                <div class="preview-grid">
-                  <div class="mock-card">
-                    <h4>Projekt-Hypergraph (Bubble Sets, Brücken &amp; Spannungen)</h4>
-                    <svg class="hypergraph-svg" viewBox="0 0 460 232" role="img" aria-label="Schematische Darstellung eines Hypergraphen mit Kapitel-Membranen, geteilten Zetteln, Außenbrücke und Widerspruchsbogen">
-                      <!-- Subtile Hintergrundkurven -->
-                      <path d="M 16 178 C 120 144, 240 198, 444 134" fill="none" stroke="var(--curve-soft)" stroke-width="1" />
-                      <!-- Feine, kontrastarme Membranen -->
-                      <ellipse cx="148" cy="108" rx="108" ry="70" fill="var(--accent-soft)" stroke="var(--accent-border)" stroke-width="1.4" />
-                      <ellipse cx="304" cy="104" rx="112" ry="72" fill="var(--ok-bg)" stroke="var(--ok-border)" stroke-width="1.4" />
-                      <ellipse cx="228" cy="162" rx="106" ry="48" fill="var(--warn-bg)" stroke="var(--warn-border)" stroke-width="1.4" />
-                      <!-- Widerspruchsbogen -->
-                      <path d="M 110 86 Q 225 22 336 86" fill="none" stroke="var(--err)" stroke-opacity="0.62" stroke-width="1.5" stroke-dasharray="4 4" />
-                      <text x="224" y="42" text-anchor="middle" font-size="10.8" font-weight="500" fill="var(--err)">⚡ Widerspruch (Modellurteil)</text>
-                      <!-- Außenbrücke -->
-                      <path d="M 226 112 Q 312 138 394 188" fill="none" stroke="var(--accent)" stroke-opacity="0.5" stroke-width="1.3" stroke-dasharray="3 3" />
-                      <circle cx="394" cy="188" r="6" fill="var(--bg-canvas)" stroke="var(--accent)" stroke-opacity="0.68" stroke-width="1.6" />
-                      <text x="382" y="212" text-anchor="middle" font-size="10.2" fill="var(--fg-muted)">◌ Außenbrücke (Motiv)</text>
-                      <!-- Knoten -->
-                      <circle cx="110" cy="86" r="5.5" fill="var(--bg-canvas)" stroke="var(--accent)" stroke-width="2" />
-                      <circle cx="152" cy="138" r="5" fill="var(--bg-canvas)" stroke="var(--accent)" stroke-width="1.8" />
-                      <circle cx="226" cy="112" r="7" fill="var(--fg)" stroke="var(--bg-canvas)" stroke-width="2.5" />
-                      <circle cx="336" cy="86" r="5.5" fill="var(--bg-canvas)" stroke="var(--ok)" stroke-width="2" />
-                      <circle cx="294" cy="148" r="5" fill="var(--bg-canvas)" stroke="var(--warn)" stroke-width="1.8" />
-                      <circle cx="212" cy="176" r="5" fill="var(--bg-canvas)" stroke="var(--warn)" stroke-width="1.8" />
-                      <!-- Labels -->
-                      <text x="80" y="64" font-size="10.8" font-weight="500" fill="var(--fg-soft)">1 · Begriff</text>
-                      <text x="312" y="62" font-size="10.8" font-weight="500" fill="var(--fg-soft)">2 · Kritik</text>
-                      <text x="192" y="201" font-size="10.8" font-weight="500" fill="var(--fg-soft)">3 · Synthese</text>
-                      <text x="226" y="131" text-anchor="middle" font-size="10.2" font-weight="500" fill="var(--fg)">Geteilter Zettel</text>
-                    </svg>
-                  </div>
-
-                  <div class="mock-card">
-                    <h4>Briefing, Gliederung &amp; Entscheidungslog</h4>
-                    <ul class="check-list">
-                      <li><strong>Fragestellung &amp; Quellen:</strong> Exposé, Seminarplan sowie Markdown- und PDF-Quellen direkt im Projekt verknüpft.</li>
-                      <li><strong>Kuratierte Zuordnung:</strong> Zettel per <code>✓</code> annehmen, per <code>✗</code> verwerfen und per Perspektiv-Wechsel auf blinde Flecken (<code>◌</code>) prüfen.</li>
-                      <li><strong>Widerspruchs-Klärung (⚡):</strong> Beide Zettel und das explizit gekennzeichnete Modellurteil stehen nebeneinander — inkl. Übernahme in <code>entscheidungen.md</code>.</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Panel 3: Schreiben -->
-              <div class="studio-panel" data-panel="schreiben" hidden>
-                <div class="preview-grid">
-                  <div class="mock-card editor-mock">
-                    <h4>CodeMirror-6-Editor direkt auf lokaler .md-Datei</h4>
-                    <p class="editor-heading">2.1 Autonomie im Umgang mit digitalen Werkzeugen</p>
-                    <p style="margin:0 0 10px; color: var(--fg-soft);">
-                      Ein Denkwerkzeug erweitert die eigene Urteilskraft nur dann, wenn seine operativen Grenzen sichtbar bleiben
-                      und <span class="critic-mark" title="KI-Kritiker: Klarheit / Beleg prüfen">jeder Übergang zwischen eigener Reflexion und maschineller Vorstrukturierung nachvollziehbar dokumentiert wird</span>.
-                    </p>
-                    <div class="provenance-box">
-                      <div class="provenance-meta">&lt;!-- ck:ki-entwurf:start herkunft="G" datum="2026-11-26" --&gt;</div>
-                      Optionale KI-Rohentwürfe sind dauerhaft als <strong>G</strong> markiert — in Markdown, im Editor-Gutter
-                      und im Lesemodus. Die Markierung verschwindet niemals automatisch.
-                    </div>
-                  </div>
-
-                  <div class="mock-card">
-                    <h4>Live-Schizo-Cockpit &amp; Duale Abschnitts-Hilfe</h4>
-                    <ul class="check-list">
-                      <li><strong>Live-Brücken je Absatz:</strong> Zeigt passende angenommene Zettel, Querbezüge und Literaturverweise passend zur Cursor-Position.</li>
-                      <li><strong>Expliziter KI-Kritiker:</strong> Prüft auf Klick in exakt 3 Kategorien: <em>Argument-Lücken</em>, <em>Widersprüche</em> und <em>Klarheit</em>.</li>
-                      <li><strong>Argumentations-Gerüst (Standard):</strong> Erzeugt rein lokal eine Stichpunkt- &amp; Belegstruktur ohne Fließtext.</li>
-                      <li><strong>Kein „Ent-KI-Lektorat“:</strong> Funktionen zum Glätten oder Verschleiern von KI-Spuren sind konzeptionell ausgeschlossen.</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <!-- 3-Spalten Dokument-Kopf -->
+    <header class="dok-kopf">
+      <div class="dok-kopf-art">
+        <span class="kuerzel-block">CK · v0.1.1</span>
+        <div>
+          <p class="label">Art</p>
+          <div class="mono">Forschungswerkzeug</div>
+          <div class="mono" style="color:var(--gedaempft)">Eigenbau · lokal</div>
         </div>
       </div>
-    </section>
 
-    <!-- Section 1: Workflow & Schizo (subtle mist band) -->
-    <section class="block band-subtle" id="arbeitsfluss">
-      <div class="wrap">
-        <p class="section-kicker">01 · Idee &amp; Arbeitsräume</p>
-        <h2 class="section-title">Ein erweiterter Denkraum in drei ruhigen Arbeitsräumen</h2>
-        <p class="section-intro">
-          Statt Gedanken zwischen Chatverläufen, Notizen und Textverarbeitung zu zersplittern, führt Chattelkasten
-          alle Zettel, Referenzen und Projekte in einem offenen lokalen Markdown-Bestand zusammen — als langlebiges
-          kognitives Gegenüber ohne Trennung in künstliche Zettelklassen.
+      <div class="dok-kopf-titel raster">
+        <h1>Chattelkasten</h1>
+        <p class="untertitel">Ein lokaler Zettelkasten mit Chat-Extraktion und klarer Herkunft.</p>
+        <p class="kopf-text">
+          Selbst gebautes Desktop-Werkzeug auf Basis von Tauri 2, Rust, TypeScript und einem lokalen
+          <code>czk</code>-Backend. Eigene Notizen, Literatur und dokumentierte KI-Gespräche liegen gemeinsam als
+          offene Markdown-Dateien auf der Platte, ohne Sonderklassen, ohne Cloud und mit mehreren gleichberechtigten
+          Perspektiven statt einer starren Ordner-Hierarchie.
         </p>
-
-        <div class="cards-3">
-          <article class="card">
-            <div class="card-num">RAUM 01</div>
-            <h3>Kasten</h3>
-            <p>
-              Der einheitliche Zettelbestand für eigene Gedanken, Lektüre-Exzerpte, Literaturreferenzen und dokumentierte Dialoge.
-            </p>
-            <ul class="check-list">
-              <li>Cluster-first Gesamt-Kasten-Graph</li>
-              <li>Import &amp; Extraktion mit frei wählbarem Modell</li>
-              <li>Zettel-Sparring vor oder nach der Aufnahme</li>
-              <li>Prüf-Eingang (<code>Ideen/_Eingang/</code>) für MCP</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="card-num">RAUM 02</div>
-            <h3>Organisation</h3>
-            <p>
-              Führt Fragestellung, Quellen, Gliederung und visuellen Projekt-Hypergraphen in einer einzigen Oberfläche zusammen.
-            </p>
-            <ul class="check-list">
-              <li>Exposé + Markdown-/PDF-Quellen</li>
-              <li>Vollbild-Hypergraph mit Bubble Sets</li>
-              <li><code>◌</code>-Außenbrücken &amp; <code>⚡</code>-Widerspruchsklärung</li>
-              <li>Kuratierte <code>entscheidungen.md</code></li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <div class="card-num">RAUM 03</div>
-            <h3>Schreiben</h3>
-            <p>
-              Integrierter CodeMirror-6-Editor direkt auf der eigenen <code>.md</code>-Arbeitsdatei — begleitet vom Live-Schizo-Cockpit.
-            </p>
-            <ul class="check-list">
-              <li>Absatzbezogene Zettel- &amp; Quellenbrücken</li>
-              <li>BibTeX-Zitationen &amp; Literaturverzeichnis</li>
-              <li>Inline-Kritiker (Lücke, Widerspruch, Klarheit)</li>
-              <li>Argumentations-Gerüst &amp; markierter <code>G</code>-Entwurf</li>
-            </ul>
-          </article>
-        </div>
-
-        <div class="schizo-banner">
-          <svg class="card-curve-bg" viewBox="0 0 340 200" fill="none" aria-hidden="true">
-            <path d="M 10 180 C 90 120, 175 156, 330 24" stroke="var(--curve-stroke)" stroke-width="1.1" />
-            <path d="M 55 196 C 148 118, 224 128, 336 72" stroke="var(--curve-soft)" stroke-width="1" />
-          </svg>
-          <div>
-            <h3>Das Schizo-Prinzip: Mehrperspektivität ohne Hauptstimme</h3>
-            <p>
-              Statt Wissen in eine einzige starre Hierarchie zu pressen, erschließt Chattelkasten denselben Bestand
-              über mehrere gleichberechtigte analytische Raster. Wenn ein Zettel aus einer anderen Perspektive eine
-              starke Verbindung aufweist, markiert ihn die Anwendung symmetrisch als <strong>Außenbrücke (<code>◌</code>)</strong> —
-              so werden produktive Spannungen sichtbar, statt in einer einzelnen Perspektive geglättet zu werden.
-            </p>
-          </div>
-          <div class="voice-pills" aria-label="Beispielhafte Schizo-Perspektiven">
-            <span class="pill pill-accent">Begriff</span>
-            <span class="pill pill-ok">Struktur</span>
-            <span class="pill pill-warn">Motiv</span>
-            <span class="pill">Bild</span>
-            <span class="pill">◌ Außenbrücke</span>
-            <span class="pill pill-err">⚡ Spannung / Widerspruch</span>
-          </div>
-        </div>
       </div>
-    </section>
 
-    <!-- Section 2: Epistemic Transparency & Principles (pure white band) -->
-    <section class="block" id="transparenz">
-      <div class="wrap">
-        <p class="section-kicker">02 · Epistemische Transparenz</p>
-        <h2 class="section-title">Kognitive Erweiterung statt Blackbox-Automation</h2>
-        <p class="section-intro">
-          Ein transhumanistisches Forschungswerkzeug verdient Vertrauen nur dann, wenn seine Grenzen, Quellen
-          und Eingriffe jederzeit sichtbar bleiben. Herkunft, Kritik und Datenschutz sind deshalb als feste
-          Software-Regeln verankert.
-        </p>
+      <dl class="dok-daten">
+        <dt>Stand</dt>
+        <dd>v0.1.1 · Nov 2026</dd>
+        <dt>Speicher</dt>
+        <dd>Lokales Markdown</dd>
+        <dt>Räume</dt>
+        <dd>Kasten · Orga · Schreiben</dd>
+        <dt>Schutz</dt>
+        <dd>Fail-Closed (privacy.rs)</dd>
+        <dt>Tests</dt>
+        <dd>73 grün (40 RS / 33 TS)</dd>
+      </dl>
+    </header>
 
-        <div class="cards-2">
-          <article class="card">
-            <div class="card-num">PRINZIP 01</div>
-            <h3>Durchgängige Herkunft statt getrennter Klassen</h3>
-            <p>
-              Alle Zettel leben im selben offenen Bestand und unterscheiden sich über ihre explizite Herkunft
-              (<code>ich</code>, <code>gemeinsam</code>, <code>quelle</code> oder <code>unklar</code>) sowie den
-              Prüfstatus von Literatur- und Autorenangaben (<code>✓</code> geprüft / <code>○</code> ungeprüft).
-              Eigene Gedanken, Quellenarbeit und Dialogergebnisse bleiben jederzeit klar nachvollziehbar.
-            </p>
-          </article>
+    <p class="hinweis-band">
+      <span class="akzent-marke">Hinweis</span>
+      <span>Kein kommerzielles Produkt und keine Cloud. Diese Seite beschreibt ein eigenes Werkzeug für wissenschaftliches Arbeiten.</span>
+    </p>
 
-          <article class="card">
-            <div class="card-num">PRINZIP 02</div>
-            <h3>Kein stilles Ghostwriting, kein „Ent-KI-Lektorat“</h3>
-            <p>
-              Die Anwendung generiert niemals unbemerkt Text im Hintergrund und schließt jede Funktion zur
-              Verschleierung von KI-Herkunft ausdrücklich aus. Im Editor stehen stattdessen ein lokales
-              <strong>Argumentations-Gerüst</strong> (ohne Fließtext), ein expliziter <strong>KI-Kritiker</strong>
-              und – nur auf bewussten Klick – dauerhaft als <code>G</code> markierte Rohentwürfe zur Verfügung.
-            </p>
-          </article>
+    <!-- 01 // VOLLBREITES NEO-BRUTALIST FLUSSDIAGRAMM MIT HYPERGRAPH -->
+    <section class="fluss-sektion" id="ablauf">
+      <h2 class="abschnitt-kopf">
+        <span>01 · Ablauf mit Hypergraph als Kernkomponente</span>
+        <span class="rechts">Vom offenen Material zum eigenen Text</span>
+      </h2>
 
-          <article class="card">
-            <div class="card-num">PRINZIP 03</div>
-            <h3>Kontext-Chips &amp; projektbezogene <code>entscheidungen.md</code></h3>
-            <p>
-              Der optionale Fenster-Assistent (<code>⌘J</code>) arbeitet strikt beratend und zeigt vor jeder Anfrage
-              abwählbare Kontext-Chips, die exakt offenlegen, welche nicht-privaten Dokumente übergeben werden.
-              Bewusste inhaltliche und methodische Festlegungen werden datiert in <code>entscheidungen.md</code> dokumentiert.
-            </p>
-          </article>
+      <div class="fluss-innen">
+        <div class="fluss-rahmen">
+          <div class="fluss-svg-wrap">
+            <svg id="flow-svg" class="fluss-svg" viewBox="0 0 960 324" role="img"
+              aria-label="Flussdiagramm von Eingängen über Kasten und privacy.rs in den Schizo-Hypergraphen bis zum Schreiben">
+              <defs>
+                <marker id="arr-tinte" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M 0 1 L 9 5 L 0 9 z" fill="var(--tinte)" />
+                </marker>
+                <marker id="arr-akzent" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M 0 1 L 9 5 L 0 9 z" fill="var(--akzent)" />
+                </marker>
+              </defs>
 
-          <article class="card">
-            <div class="card-num">PRINZIP 04</div>
-            <h3>Fail-Closed-Datenschutz (<code>privacy.rs</code>)</h3>
-            <p>
-              Sensible Ordner und als <code>privat: true</code> markierte Zettel werden serverseitig im Rust-Backend
-              vor Cloud-KI-APIs, MCP-Servern und Projekt-Briefings blockiert. Jeder Kontakt löst eine sichtbare
-              Benachrichtigung aus; Multi-Kasten-Profile können Sperren niemals abschwächen.
-            </p>
-          </article>
-        </div>
+              <!-- 01 // EINGÄNGE -->
+              <g class="flow-stage" data-stage="eingang" role="button" tabindex="0" aria-label="Schritt 1: Eingänge">
+                <text x="16" y="24" font-family="var(--mono)" font-size="11" fill="var(--akzent)">01 // EINGÄNGE</text>
 
-        <div class="matrix-wrap">
-          <table class="matrix">
-            <thead>
-              <tr>
-                <th>Funktion im Arbeitsprozess</th>
-                <th>Verarbeitung</th>
-                <th>Transparenz- &amp; Kontrollmechanismus</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Zettel-Suche, Hypergraph &amp; Gliederung</strong></td>
-                <td>Lokal (Rust + lokales <code>czk</code>-Backend auf <code>127.0.0.1</code>)</td>
-                <td>Herkunft (<code>ich</code> / <code>gemeinsam</code> / <code>quelle</code>) und Ähnlichkeitsschwelle dauerhaft sichtbar</td>
-              </tr>
-              <tr>
-                <td><strong>Argumentations-Gerüst (Editor)</strong></td>
-                <td>Lokal, kein Fließtext</td>
-                <td>Stellt angenommene Zettel, Belege, <code>⚡</code>-Spannungen und Entscheidungen strukturiert zusammen</td>
-              </tr>
-              <tr>
-                <td><strong>Inline-Kritiker &amp; Zettel-Sparring</strong></td>
-                <td>Expliziter Klick (Ollama lokal oder BYOK)</td>
-                <td>Prüft Lücken, Widersprüche und Klarheit; alle Dateipfade vorab durch <code>privacy.rs</code> gefiltert</td>
-              </tr>
-              <tr>
-                <td><strong>Optionaler KI-Rohentwurf</strong></td>
-                <td>Expliziter Klick (Opt-in)</td>
-                <td>Dauerhafte Markdown-Marker <code>&lt;!-- ck:ki-entwurf:start herkunft="G" ... --&gt;</code> + visuelles Editor-Highlight</td>
-              </tr>
-              <tr>
-                <td><strong>Externe KI-Agenten über MCP</strong></td>
-                <td>Lesend + isolierte Prüf-Inbox</td>
-                <td>Kein Direkt-Schreiben in Zettel oder Manuskript; Vorschläge landen ausschließlich in <code>Ideen/_Eingang/</code></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+                <!-- Karte 1A -->
+                <rect x="20" y="38" width="166" height="68" fill="var(--tinte)" />
+                <rect x="16" y="34" width="166" height="68" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.5" />
+                <text x="28" y="57" font-family="var(--mono)" font-size="11" font-weight="600" fill="var(--tinte)">EIGENE NOTIZEN</text>
+                <text x="28" y="75" font-family="var(--mono)" font-size="10" fill="var(--gedaempft)">Markdown</text>
+                <text x="28" y="90" font-family="var(--mono)" font-size="10" fill="var(--tinte)">herkunft: ich</text>
 
-    <!-- Section 3: Architecture (subtle mist band) -->
-    <section class="block band-subtle" id="architektur">
-      <div class="wrap">
-        <p class="section-kicker">03 · Technische Architektur</p>
-        <h2 class="section-title">Schlanker Desktop-Kern in Rust &amp; TypeScript</h2>
-        <p class="section-intro">
-          Chattelkasten trennt Oberfläche, Sicherheits-/Dateischicht und semantisches Analyse-Backend über
-          klar typisierte Schnittstellen. Alle Kernpfade sind durch automatisierte Tests abgesichert.
-        </p>
+                <!-- Karte 1B -->
+                <rect x="20" y="124" width="166" height="68" fill="var(--tinte)" />
+                <rect x="16" y="120" width="166" height="68" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.5" />
+                <text x="28" y="143" font-family="var(--mono)" font-size="11" font-weight="600" fill="var(--tinte)">LITERATUR &amp; PDF</text>
+                <text x="28" y="161" font-family="var(--mono)" font-size="10" fill="var(--gedaempft)">Exzerpte · BibTeX</text>
+                <text x="28" y="176" font-family="var(--mono)" font-size="10" fill="var(--tinte)">herkunft: quelle</text>
 
-        <div class="arch-stack">
-          <div class="arch-layer">
-            <span class="arch-layer-tag">Frontend · TypeScript &amp; Vite</span>
-            <h3>Oberfläche, Editor &amp; Hypergraph</h3>
-            <p>
-              Komponenten für <code>Kasten</code>, <code>Organisation</code> und <code>Schreiben</code>,
-              CodeMirror 6 (inkl. Inline-Kritiker &amp; Provenienz-Highlight), <code>bubblesets-js</code> für
-              Kapitel-Membranen, kontextsensitives Scoped Undo und 33 automatisierte TypeScript-Tests.
-            </p>
-          </div>
+                <!-- Karte 1C -->
+                <rect x="20" y="210" width="166" height="76" fill="var(--akzent)" />
+                <rect x="16" y="206" width="166" height="76" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.5" stroke-dasharray="5 3" />
+                <text x="28" y="229" font-family="var(--mono)" font-size="11" font-weight="600" fill="var(--tinte)">DIALOGE &amp; MCP</text>
+                <text x="28" y="247" font-family="var(--mono)" font-size="10" fill="var(--gedaempft)">Chats · Agenten</text>
+                <text x="28" y="264" font-family="var(--mono)" font-size="10" fill="var(--akzent)">Ideen/_Eingang/</text>
+                <text x="28" y="276" font-family="var(--mono)" font-size="9" fill="var(--gedaempft)">erst nach Freigabe</text>
+              </g>
 
-          <div class="arch-layer">
-            <span class="arch-layer-tag">Backend · Tauri 2 &amp; Rust</span>
-            <h3>Datenschutz, Dateien &amp; KI-Guards</h3>
-            <p>
-              Serverseitiger Fail-Closed-Filter (<code>privacy.rs</code>), atomare Datei-I/O (<code>workspace.rs</code>),
-              Multi-Kasten-Konfiguration mit <code>0600</code>-Rechten (<code>config.rs</code>), BibTeX-Zitationen,
-              Decision Log (<code>decisions.rs</code>) und 40 automatisierte Rust-Tests.
-            </p>
-          </div>
+              <!-- Verbindung 01 -> 02 -->
+              <g class="flow-edge" data-edges="eingang kasten">
+                <path d="M 182 68 H 200 V 244 H 182 M 182 154 H 200" fill="none" stroke="var(--tinte)" stroke-width="1.4" />
+                <line x1="200" y1="120" x2="220" y2="120" stroke="var(--tinte)" stroke-width="1.6" marker-end="url(#arr-tinte)" />
+              </g>
 
-          <div class="arch-layer">
-            <span class="arch-layer-tag">Rechenmotor · Python (lokal)</span>
-            <h3>Semantik, Embeddings &amp; MCP</h3>
-            <p>
-              Das lokale Python-Analyse-Backend (<code>czk</code>)
-              stellt in <code>v0.1.1</code> über <code>127.0.0.1</code> Embeddings, Schizo-Ähnlichkeiten,
-              Widerspruchserkennung und den MCP-Server bereit (Entkopplung über <code>trait KastenEngine</code>).
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+              <!-- 02 // KASTEN & PRIVACY-GUARD -->
+              <g class="flow-stage" data-stage="kasten" role="button" tabindex="0" aria-label="Schritt 2: Kasten und privacy.rs">
+                <text x="224" y="24" font-family="var(--mono)" font-size="11" fill="var(--akzent)">02 // KASTEN</text>
 
-    <!-- Section 4: Scientific Context & Presentation (pure white band) -->
-    <section class="block" id="einordnung">
-      <div class="wrap">
-        <p class="section-kicker">04 · Wissenschaftlicher Kontext</p>
-        <h2 class="section-title">Einordnung, Entstehung &amp; persönliche Vorstellung</h2>
+                <rect x="228" y="38" width="168" height="148" fill="var(--tinte)" />
+                <rect x="224" y="34" width="168" height="148" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.5" />
+                <rect x="224" y="34" width="168" height="24" fill="var(--tinte)" />
+                <text x="234" y="50" font-family="var(--mono)" font-size="10" font-weight="600" fill="var(--papier)">EINHEITLICHER BESTAND</text>
 
-        <div class="declaration-shell">
-          <div class="declaration-box">
-            <svg class="card-curve-bg" viewBox="0 0 340 200" fill="none" aria-hidden="true">
-              <path d="M 18 188 C 110 132, 188 144, 336 18" stroke="var(--curve-stroke)" stroke-width="1.1" />
-              <path d="M 74 198 C 164 134, 232 118, 338 74" stroke="var(--curve-soft)" stroke-width="1" />
-              <circle cx="212" cy="116" r="3.5" fill="var(--bg-canvas)" stroke="var(--curve-stroke)" stroke-width="1.2" />
+                <text x="234" y="79" font-family="var(--grotesk)" font-size="13" font-weight="600" fill="var(--tinte)">Atomare .md-Zettel</text>
+                <text x="234" y="99" font-family="var(--mono)" font-size="10" fill="var(--gedaempft)">· keine Sonderklassen</text>
+                <text x="234" y="117" font-family="var(--mono)" font-size="10" fill="var(--gedaempft)">· Cluster-Graph &lt;100 ms</text>
+                <text x="234" y="135" font-family="var(--mono)" font-size="10" fill="var(--gedaempft)">· Zettel-Sparring</text>
+                <text x="234" y="153" font-family="var(--mono)" font-size="10" fill="var(--gedaempft)">· Multi-Kasten-Profile</text>
+                <text x="234" y="171" font-family="var(--mono)" font-size="10" fill="var(--tinte)">· Undo (⌘Z)</text>
+
+                <!-- Guard Box darunter -->
+                <line x1="308" y1="186" x2="308" y2="206" stroke="var(--akzent)" stroke-width="1.5" stroke-dasharray="3 3" />
+                <rect x="228" y="210" width="168" height="76" fill="var(--akzent)" />
+                <rect x="224" y="206" width="168" height="76" fill="var(--papier)" stroke="var(--akzent)" stroke-width="1.8" />
+                <text x="234" y="226" font-family="var(--mono)" font-size="10" font-weight="600" fill="var(--akzent)">GUARD // privacy.rs</text>
+                <text x="234" y="246" font-family="var(--grotesk)" font-size="12.5" font-weight="600" fill="var(--tinte)">Fail-Closed in Rust</text>
+                <text x="234" y="264" font-family="var(--mono)" font-size="9.5" fill="var(--gedaempft)">privat: true ✕ Cloud</text>
+                <text x="234" y="277" font-family="var(--mono)" font-size="9.5" fill="var(--gedaempft)">privat: true ✕ MCP</text>
+              </g>
+
+              <!-- Verbindung 02 -> 03 -->
+              <g class="flow-edge" data-edges="kasten hypergraph">
+                <line x1="396" y1="120" x2="424" y2="120" stroke="var(--tinte)" stroke-width="1.6" marker-end="url(#arr-tinte)" />
+                <text x="410" y="109" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--gedaempft)">czk</text>
+              </g>
+
+              <!-- 03 // HYPERGRAPH-KOMPONENTE -->
+              <g class="flow-stage" data-stage="hypergraph" role="button" tabindex="0" aria-label="Schritt 3: Schizo-Hypergraph">
+                <text x="430" y="24" font-family="var(--mono)" font-size="11" fill="var(--akzent)">03 // HYPERGRAPH (ORGANISATION)</text>
+
+                <rect x="435" y="39" width="286" height="248" fill="var(--tinte)" />
+                <rect x="430" y="34" width="286" height="248" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.8" />
+
+                <!-- Kopfzeile im Hypergraph-Modul -->
+                <rect x="430" y="34" width="286" height="24" fill="var(--flaeche)" stroke="var(--tinte)" stroke-width="1" />
+                <text x="440" y="50" font-family="var(--mono)" font-size="10" fill="var(--tinte)">BUBBLE SETS · 127.0.0.1</text>
+                <text id="flow-hg-lens" x="706" y="50" text-anchor="end" font-family="var(--mono)" font-size="10" font-weight="600" fill="var(--akzent)">BEGRIFF</text>
+
+                <!-- Feines Hilfsraster im Hypergraph -->
+                <line x1="573" y1="64" x2="573" y2="244" stroke="var(--raster)" stroke-width="1" />
+                <line x1="438" y1="154" x2="708" y2="154" stroke="var(--raster)" stroke-width="1" />
+
+                <!-- 3 überlappende Membranen -->
+                <ellipse id="flow-mem-1" class="hg-membrane" cx="520" cy="140" rx="68" ry="44"
+                  fill="var(--flaeche)" fill-opacity="0.72" stroke="var(--tinte)" stroke-width="1.4" />
+                <ellipse id="flow-mem-2" class="hg-membrane" cx="624" cy="138" rx="68" ry="44"
+                  fill="var(--flaeche)" fill-opacity="0.58" stroke="var(--tinte)" stroke-width="1.4" stroke-dasharray="5 3" />
+                <ellipse id="flow-mem-3" class="hg-membrane" cx="572" cy="186" rx="76" ry="34"
+                  fill="var(--akzent-sanft)" stroke="var(--akzent)" stroke-width="1.3" />
+
+                <!-- Kanten -->
+                <path d="M 488 134 L 572 152 L 656 134 M 526 176 L 572 152 L 620 176" fill="none" stroke="var(--tinte)" stroke-width="1.1" />
+                <path d="M 488 134 Q 572 78 656 134" fill="none" stroke="var(--akzent)" stroke-width="1.8" stroke-dasharray="4 3" />
+                <path d="M 572 152 Q 642 172 688 214" fill="none" stroke="var(--tinte)" stroke-width="1.3" stroke-dasharray="3 3" />
+
+                <!-- Beschriftungen -->
+                <text x="466" y="110" font-family="var(--mono)" font-size="9" fill="var(--gedaempft)">BEGRIFF</text>
+                <text x="638" y="108" font-family="var(--mono)" font-size="9" fill="var(--gedaempft)">KRITIK</text>
+                <text x="572" y="212" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--akzent)">SYNTHESE</text>
+                <text x="572" y="94" text-anchor="middle" font-family="var(--mono)" font-size="9.5" font-weight="600" fill="var(--akzent)">⚡ WIDERSPRUCH</text>
+                <text x="670" y="232" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--tinte)">◌ AUSSENBRÜCKE</text>
+
+                <!-- Eckige brutalistische Knoten -->
+                <rect x="483" y="129" width="10" height="10" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.8" />
+                <rect x="521" y="171" width="9" height="9" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.6" />
+                <rect x="566" y="146" width="12" height="12" fill="var(--akzent)" stroke="var(--tinte)" stroke-width="1.8" />
+                <rect x="651" y="129" width="10" height="10" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.8" />
+                <rect x="615" y="171" width="9" height="9" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.6" />
+                <rect x="683" y="209" width="10" height="10" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.6" stroke-dasharray="2 2" />
+
+                <!-- Fußzeile im Hypergraph-Modul -->
+                <line x1="430" y1="248" x2="716" y2="248" stroke="var(--tinte)" stroke-width="1" />
+                <text x="440" y="268" font-family="var(--mono)" font-size="9.5" fill="var(--tinte)">✓ ANNEHMEN · ✗ VERWERFEN</text>
+                <text x="706" y="268" text-anchor="end" font-family="var(--mono)" font-size="9.5" fill="var(--gedaempft)">entscheidungen.md</text>
+              </g>
+
+              <!-- Verbindung 03 -> 04 -->
+              <g class="flow-edge" data-edges="hypergraph schreiben">
+                <line x1="721" y1="120" x2="749" y2="120" stroke="var(--tinte)" stroke-width="1.6" marker-end="url(#arr-tinte)" />
+                <text x="735" y="109" text-anchor="middle" font-family="var(--mono)" font-size="9" fill="var(--gedaempft)">✓</text>
+              </g>
+
+              <!-- 04 // SCHREIBEN & KRITIKER -->
+              <g class="flow-stage" data-stage="schreiben" role="button" tabindex="0" aria-label="Schritt 4: Schreiben und Kritiker">
+                <text x="756" y="24" font-family="var(--mono)" font-size="11" fill="var(--akzent)">04 // SCHREIBEN</text>
+
+                <rect x="760" y="38" width="184" height="148" fill="var(--tinte)" />
+                <rect x="756" y="34" width="184" height="148" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.5" />
+                <rect x="756" y="34" width="184" height="24" fill="var(--tinte)" />
+                <text x="766" y="50" font-family="var(--mono)" font-size="10" font-weight="600" fill="var(--papier)">CODEMIRROR 6 (.MD)</text>
+
+                <text x="766" y="79" font-family="var(--grotesk)" font-size="13" font-weight="600" fill="var(--tinte)">Eigener Text lokal</text>
+                <text x="766" y="99" font-family="var(--mono)" font-size="10" fill="var(--gedaempft)">· Live-Zettelbrücken</text>
+                <text x="766" y="117" font-family="var(--mono)" font-size="10" fill="var(--gedaempft)">· BibTeX-Zitationen</text>
+                <text x="766" y="135" font-family="var(--mono)" font-size="10" fill="var(--gedaempft)">· Gerüst ohne Text</text>
+                <text x="766" y="153" font-family="var(--mono)" font-size="10" fill="var(--akzent)">· opt-in G-Marker</text>
+                <text x="766" y="171" font-family="var(--mono)" font-size="10" fill="var(--gedaempft)">· kein Ent-KI-Lektorat</text>
+
+                <!-- Opt-in Kritiker darunter -->
+                <line x1="848" y1="186" x2="848" y2="204" stroke="var(--akzent)" stroke-width="1.5" stroke-dasharray="3 3" marker-end="url(#arr-akzent)" />
+                <rect x="760" y="210" width="184" height="76" fill="var(--tinte)" />
+                <rect x="756" y="206" width="184" height="76" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.5" stroke-dasharray="5 3" />
+                <text x="766" y="226" font-family="var(--mono)" font-size="10" font-weight="600" fill="var(--akzent)">OPT-IN // KRITIKER</text>
+                <text x="766" y="246" font-family="var(--grotesk)" font-size="12.5" font-weight="600" fill="var(--tinte)">Nur auf Klick</text>
+                <text x="766" y="264" font-family="var(--mono)" font-size="9.5" fill="var(--gedaempft)">Lücke · Widerspruch</text>
+                <text x="766" y="277" font-family="var(--mono)" font-size="9.5" fill="var(--gedaempft)">Klarheit (Ollama/BYOK)</text>
+              </g>
             </svg>
-            <h3>Rolle im wissenschaftlichen Arbeitsprozess &amp; Mensch-KI-Entwicklung</h3>
-            <p>
-              <strong>Chattelkasten</strong> (Stand <code>v0.1.1</code>, November 2026) ist ein eigenständig
-              konzipiertes und in iterativer Mensch-KI-Zusammenarbeit entwickeltes Forschungswerkzeug. Diese
-              Seite dokumentiert seine Funktionsweise und methodischen Leitlinien als transparenten Referenzpunkt
-              für wissenschaftliche Arbeiten, in denen die Umgebung zur Wissensorganisation, Begriffs- und
-              Literaturarbeit sowie zur kritischen Schreibbegleitung genutzt wurde.
-            </p>
-            <p>
-              Im Forschungs- und Schreibprozess dient Chattelkasten der Erweiterung von Übersicht, Perspektivwechsel
-              und kritischer Prüfung: Die Wahl der Fragestellung, die Bewertung von Quellen und Widersprüchen,
-              dokumentierte Struktur- und Theorieentscheidungen (<code>entscheidungen.md</code>) sowie die
-              eigenständige wissenschaftliche Urteilsbildung und Textverfassung verbleiben vollständig bei der
-              schreibenden Person. Wo KI-Modelle beratend (etwa im Zettel-Sparring oder durch den Inline-Kritiker)
-              hinzugezogen werden, geschieht dies explizit ausgelöst, datenschutzgefiltert und unter klarer
-              Herkunftsmarkierung.
-            </p>
-            <p>
-              Auch die Software selbst entstand transparent im Zusammenspiel aus menschlicher Konzeption,
-              Architektur-Spezifikationen, kritischen Review-Zyklen sowie KI-gestützter Implementierung und
-              automatisierter Verifikation.
-            </p>
+          </div>
 
-            <div class="meta-grid">
-              <div class="meta-item">
-                <strong>Vorstellung auf Anfrage</strong>
-                Auf Anfrage stelle ich das Werkzeug gerne persönlich vor — inklusive praktischer Demonstration
-                des Arbeitsflusses sowie Einsicht in Architektur, Tests und Quellcode.
-              </div>
-              <div class="meta-item">
-                <strong>Projektstand &amp; Codebasis</strong>
-                Desktop-App (<code>chattelkasten-app</code>, Stand <code>v0.1.1</code>) und lokales
-                Analyse-Backend (<code>czk</code>) befinden sich in privater Entwicklung.
-              </div>
+          <div class="fluss-leiste">
+            <div class="knopf-gruppe" role="group" aria-label="Schritt im Flussdiagramm wählen">
+              <button type="button" class="knopf is-active" data-flow-select="all">Alle</button>
+              <button type="button" class="knopf" data-flow-select="eingang">01 Eingänge</button>
+              <button type="button" class="knopf" data-flow-select="kasten">02 Kasten</button>
+              <button type="button" class="knopf" data-flow-select="hypergraph">03 Hypergraph</button>
+              <button type="button" class="knopf" data-flow-select="schreiben">04 Schreiben</button>
             </div>
+            <p class="fluss-notiz" id="flow-caption">
+              Klick auf eine Station hebt sie hervor. Alle Schritte laufen lokal auf offenen Markdown-Dateien.
+            </p>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- 2-SPALTEN HAUPTBEREICH (Portfolio .artikel-rumpf) -->
+    <div class="artikel-rumpf">
+      <aside class="artikel-links">
+        <div class="artikel-links-innen">
+          <div>
+            <p class="label">Inhalt</p>
+            <ol class="seiten-nav">
+              <li><a href="#ablauf"><span class="nr">01</span> Ablauf</a></li>
+              <li><a href="#perspektiven"><span class="nr">02</span> Perspektiven</a></li>
+              <li><a href="#raeume"><span class="nr">03</span> Arbeitsräume</a></li>
+              <li><a href="#grenzen"><span class="nr">04</span> Grenzen</a></li>
+              <li><a href="#aufbau"><span class="nr">05</span> Aufbau</a></li>
+              <li><a href="#einordnung"><span class="nr">06</span> Einordnung</a></li>
+            </ol>
+          </div>
+
+          <div class="referenz-kasten">
+            <p class="label">Referenz</p>
+            <p>chattelkasten.com<br />Stand v0.1.1 (2026-11)</p>
+            <p>Statische Seite ohne Cookies, ohne Tracking und ohne externe Skripte.</p>
+          </div>
+        </div>
+      </aside>
+
+      <div class="artikel-inhalt">
+        <!-- 02 // EIN OBJEKT, DREI SILHOUETTEN (3D-PROJEKTION) -->
+        <section class="kapitel-band" id="perspektiven">
+          <p class="label">02 · Mehrere Perspektiven</p>
+          <h2>Ein geteilter Vektor, drei verschiedene Silhouetten</h2>
+          <p class="kapitel-einleitung">
+            Ein und derselbe Gedanke zeigt je nach Blickrichtung eine andere Form. Wie ein 3D-Objekt, das entlang
+            dreier Achsen durch ein Dreieck, ein Quadrat und einen Kreis passt, verbindet ein geteilter Vektor
+            unterschiedliche Zettel, ohne sie auf eine einzige Ordnung festzulegen.
+          </p>
+
+          <div class="schizo-gitter">
+            <div class="brutal-kasten">
+              <div class="kasten-kopf">
+                <span>Orthogonale Projektion · 1 Vektor, 3 Löcher (Zettel)</span>
+                <span id="proj-status" class="marke marke-akzent">Alle Achsen</span>
+              </div>
+
+              <div class="schizo-svg-wrap">
+                <svg id="proj-svg" class="proj-svg" viewBox="0 0 560 404" role="img"
+                  aria-label="Isometrische Darstellung eines 3D-Objekts als geteilter Vektor, der auf drei Flächen ein Dreieck, ein Quadrat und ein rundes Loch als verschiedene Zettel projiziert">
+                  <!-- Drei Projektionsflächen (Raumecke) -->
+                  <polygon points="280.0,206.0 127.6,294.0 127.6,118.0 280.0,30.0" fill="var(--flaeche)" stroke="var(--tinte)" stroke-width="1.5" />
+                  <polygon points="280.0,206.0 432.4,294.0 432.4,118.0 280.0,30.0" fill="var(--flaeche-2)" stroke="var(--tinte)" stroke-width="1.5" />
+                  <polygon points="280.0,206.0 127.6,294.0 280.0,382.0 432.4,294.0" fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.5" />
+
+                  <!-- Feines isometrisches Wandraster -->
+                  <g stroke="var(--raster)" stroke-width="1" fill="none">
+                    <line x1="241.9" y1="228.0" x2="241.9" y2="52.0" />
+                    <line x1="203.8" y1="250.0" x2="203.8" y2="74.0" />
+                    <line x1="165.7" y1="272.0" x2="165.7" y2="96.0" />
+                    <line x1="280.0" y1="162.0" x2="127.6" y2="250.0" />
+                    <line x1="280.0" y1="118.0" x2="127.6" y2="206.0" />
+                    <line x1="280.0" y1="74.0" x2="127.6" y2="162.0" />
+
+                    <line x1="318.1" y1="228.0" x2="318.1" y2="52.0" />
+                    <line x1="356.2" y1="250.0" x2="356.2" y2="74.0" />
+                    <line x1="394.3" y1="272.0" x2="394.3" y2="96.0" />
+                    <line x1="280.0" y1="162.0" x2="432.4" y2="250.0" />
+                    <line x1="280.0" y1="118.0" x2="432.4" y2="206.0" />
+                    <line x1="280.0" y1="74.0" x2="432.4" y2="162.0" />
+
+                    <line x1="241.9" y1="228.0" x2="394.3" y2="316.0" />
+                    <line x1="203.8" y1="250.0" x2="356.2" y2="338.0" />
+                    <line x1="165.7" y1="272.0" x2="318.1" y2="360.0" />
+                    <line x1="318.1" y1="228.0" x2="165.7" y2="316.0" />
+                    <line x1="356.2" y1="250.0" x2="203.8" y2="338.0" />
+                    <line x1="394.3" y1="272.0" x2="241.9" y2="360.0" />
+                  </g>
+
+                  <!-- Wand- und Achsenbeschriftungen (sauber außerhalb der Löcher) -->
+                  <text transform="translate(194, 67) rotate(-30)" text-anchor="middle" font-family="var(--mono)" font-size="9.5" fill="var(--gedaempft)">FLÄCHE A · BEGRIFF</text>
+                  <text transform="translate(366, 67) rotate(30)" text-anchor="middle" font-family="var(--mono)" font-size="9.5" fill="var(--gedaempft)">FLÄCHE B · STRUKTUR</text>
+                  <text x="280" y="397" text-anchor="middle" font-family="var(--mono)" font-size="9.5" fill="var(--gedaempft)">FLÄCHE C · MOTIV</text>
+
+                  <!-- PROJEKTIONSSTRAHLEN (hinter dem 3D-Objekt) -->
+                  <g class="proj-axis" data-axis="begriff">
+                    <line class="proj-ray" x1="254.0" y1="153.0" x2="188.2" y2="115.0" stroke="var(--tinte)" stroke-width="1.2" stroke-dasharray="4 4" />
+                    <line class="proj-ray" x1="306.0" y1="213.0" x2="214.2" y2="160.0" stroke="var(--tinte)" stroke-width="1.2" stroke-dasharray="4 4" />
+                    <line class="proj-ray" x1="254.0" y1="243.0" x2="162.2" y2="190.0" stroke="var(--tinte)" stroke-width="1.2" stroke-dasharray="4 4" />
+                  </g>
+
+                  <g class="proj-axis" data-axis="struktur">
+                    <line class="proj-ray" x1="254.0" y1="153.0" x2="345.8" y2="100.0" stroke="var(--tinte)" stroke-width="1.2" stroke-dasharray="4 4" />
+                    <line class="proj-ray" x1="306.0" y1="183.0" x2="397.8" y2="130.0" stroke="var(--tinte)" stroke-width="1.2" stroke-dasharray="4 4" />
+                    <line class="proj-ray" x1="306.0" y1="243.0" x2="397.8" y2="190.0" stroke="var(--tinte)" stroke-width="1.2" stroke-dasharray="4 4" />
+                  </g>
+
+                  <g class="proj-axis" data-axis="motiv">
+                    <line class="proj-ray" x1="243.3" y1="228.0" x2="243.3" y2="312.0" stroke="var(--tinte)" stroke-width="1.2" stroke-dasharray="4 4" />
+                    <line class="proj-ray" x1="316.7" y1="228.0" x2="316.7" y2="312.0" stroke="var(--tinte)" stroke-width="1.2" stroke-dasharray="4 4" />
+                    <line class="proj-ray" x1="280.0" y1="249.2" x2="280.0" y2="333.2" stroke="var(--tinte)" stroke-width="1.2" stroke-dasharray="4 4" />
+                  </g>
+
+                  <!-- LOCH 1: DREIECK (Linke Fläche · Zettel Z-011) -->
+                  <g class="proj-hole" data-axis="begriff" role="button" tabindex="0" aria-label="Dreieckiges Loch auf Fläche A: Zettel Z-011 (Begriff)">
+                    <polygon class="hole-cut" points="214.2,160.0 162.2,190.0 188.2,115.0" fill="var(--papier)" stroke="var(--tinte)" stroke-width="2" />
+                    <!-- Innere Wandtiefe der Öffnung -->
+                    <polyline points="209.5,162.8 188.2,120.5 166.5,187.5" fill="none" stroke="var(--gedaempft)" stroke-width="1.2" />
+                    <text x="188.2" y="210" text-anchor="middle" font-family="var(--mono)" font-size="10" font-weight="600" fill="var(--tinte)">△ Z-011</text>
+                    <text x="188.2" y="222" text-anchor="middle" font-family="var(--mono)" font-size="8.8" fill="var(--gedaempft)">ZETTEL (BEGRIFF)</text>
+                  </g>
+
+                  <!-- LOCH 2: QUADRAT (Rechte Fläche · Zettel Z-058) -->
+                  <g class="proj-hole" data-axis="struktur" role="button" tabindex="0" aria-label="Quadratisches Loch auf Fläche B: Zettel Z-058 (Struktur)">
+                    <polygon class="hole-cut" points="345.8,160.0 397.8,190.0 397.8,130.0 345.8,100.0" fill="var(--papier)" stroke="var(--tinte)" stroke-width="2" />
+                    <polyline points="350.0,157.5 350.0,104.8 394.0,130.5" fill="none" stroke="var(--gedaempft)" stroke-width="1.2" />
+                    <text x="372" y="210" text-anchor="middle" font-family="var(--mono)" font-size="10" font-weight="600" fill="var(--tinte)">□ Z-058</text>
+                    <text x="372" y="222" text-anchor="middle" font-family="var(--mono)" font-size="8.8" fill="var(--gedaempft)">ZETTEL (STRUKTUR)</text>
+                  </g>
+
+                  <!-- LOCH 3: KREIS (Bodenfläche · Zettel Z-089) -->
+                  <g class="proj-hole" data-axis="motiv" role="button" tabindex="0" aria-label="Rundes Loch auf Fläche C: Zettel Z-089 (Motiv)">
+                    <path class="hole-cut"
+                      d="M 254.0 327.0 L 258.9 329.4 L 264.5 331.2 L 270.5 332.5 L 276.8 333.1 L 283.2 333.1 L 289.5 332.5 L 295.5 331.2 L 301.1 329.4 L 306.0 327.0 L 310.1 324.2 L 313.3 321.0 L 315.5 317.5 L 316.6 313.8 L 316.6 310.2 L 315.5 306.5 L 313.3 303.0 L 310.1 299.8 L 306.0 297.0 L 301.1 294.6 L 295.5 292.8 L 289.5 291.5 L 283.2 290.9 L 276.8 290.9 L 270.5 291.5 L 264.5 292.8 L 258.9 294.6 L 254.0 297.0 L 249.9 299.8 L 246.7 303.0 L 244.5 306.5 L 243.4 310.2 L 243.4 313.8 L 244.5 317.5 L 246.7 321.0 L 249.9 324.2 Z"
+                      fill="var(--flaeche)" stroke="var(--tinte)" stroke-width="2" />
+                    <path d="M 248.0 315.5 A 33 18 0 0 1 312.0 315.5" fill="none" stroke="var(--gedaempft)" stroke-width="1.2" />
+                    <text x="280" y="347" text-anchor="middle" font-family="var(--mono)" font-size="10" font-weight="600" fill="var(--tinte)">○ Z-089</text>
+                    <text x="280" y="358" text-anchor="middle" font-family="var(--mono)" font-size="8.8" fill="var(--gedaempft)">ZETTEL (MOTIV)</text>
+                  </g>
+
+                  <!-- DAS 3D-OBJEKT IN DER MITTE (GETEILTER VEKTOR: KEIL-ZYLINDER) -->
+                  <g class="proj-solid" data-axis="all" role="button" tabindex="0" aria-label="Das 3D-Objekt als geteilter Vektor: passt in Dreieck, Quadrat und Kreis">
+                    <!-- Zylindrische Front-Unterseite -->
+                    <path d="M 243.3 228.0 L 243.4 229.8 L 243.8 231.7 L 244.5 233.5 L 245.5 235.3 L 246.7 237.0 L 248.2 238.6 L 249.9 240.2 L 251.9 241.6 L 254.0 243.0 L 256.4 244.3 L 258.9 245.4 L 261.6 246.4 L 264.5 247.2 L 267.4 247.9 L 270.5 248.5 L 273.6 248.9 L 276.8 249.1 L 280.0 249.2 L 283.2 249.1 L 286.4 248.9 L 289.5 248.5 L 292.6 247.9 L 295.5 247.2 L 298.4 246.4 L 301.1 245.4 L 303.6 244.3 L 306.0 243.0 L 306.0 183.0 L 303.6 189.5 L 301.1 195.8 L 298.4 201.9 L 295.5 207.7 L 292.6 213.3 L 289.5 218.5 L 286.4 223.3 L 283.2 227.7 L 280.0 231.6 L 276.8 235.1 L 273.6 238.0 L 270.5 240.5 L 267.4 242.3 L 264.5 243.6 L 261.6 244.3 L 258.9 244.5 L 256.4 244.0 L 254.0 243.0 L 251.9 241.4 L 249.9 239.3 L 248.2 236.6 L 246.7 233.3 L 245.5 229.6 L 244.5 225.5 L 243.8 220.8 L 243.4 215.8 L 243.3 210.4 Z"
+                      fill="var(--flaeche-2)" stroke="var(--tinte)" stroke-width="1.8" stroke-linejoin="round" />
+                    <!-- Rechte gekrümmte Zylinderflanke -->
+                    <path d="M 306.0 243.0 L 308.1 241.6 L 310.1 240.2 L 311.8 238.6 L 313.3 237.0 L 314.5 235.3 L 315.5 233.5 L 316.2 231.7 L 316.6 229.8 L 316.7 228.0 L 316.7 210.4 L 316.6 208.4 L 316.2 206.1 L 315.5 203.5 L 314.5 200.6 L 313.3 197.5 L 311.8 194.1 L 310.1 190.6 L 308.1 186.9 L 306.0 183.0 Z"
+                      fill="var(--tinte)" fill-opacity="0.16" stroke="var(--tinte)" stroke-width="1.8" stroke-linejoin="round" />
+                    <!-- Sichtbare schräge Keilfläche -->
+                    <path d="M 254.0 153.0 L 306.0 183.0 L 302.9 191.3 L 299.5 199.3 L 295.9 206.9 L 292.1 214.1 L 288.2 220.6 L 284.1 226.5 L 280.0 231.6 L 275.9 236.0 L 271.8 239.5 L 267.9 242.1 L 264.1 243.7 L 260.5 244.5 L 257.1 244.2 L 254.0 243.0 L 251.3 240.8 L 248.9 237.8 L 246.9 233.8 L 245.3 229.1 L 244.2 223.5 L 243.5 217.3 L 243.3 210.4 L 243.5 203.0 L 244.2 195.2 L 245.3 187.0 L 246.9 178.6 L 248.9 170.1 L 251.3 161.5 L 254.0 153.0 Z"
+                      fill="var(--papier)" stroke="var(--tinte)" stroke-width="1.9" stroke-linejoin="round" />
+                    <!-- Technische Schraffur auf der Keilfläche -->
+                    <g stroke="var(--gedaempft)" stroke-width="0.9">
+                      <line x1="264.4" y1="159.0" x2="243.6" y2="219.0" />
+                      <line x1="272.2" y1="163.5" x2="247.4" y2="235.0" />
+                      <line x1="280.0" y1="168.0" x2="254.0" y2="243.0" />
+                      <line x1="287.8" y1="172.5" x2="263.0" y2="244.0" />
+                      <line x1="295.6" y1="177.0" x2="274.8" y2="237.0" />
+                    </g>
+                    <!-- Signal-Firstkante (Zinnober) -->
+                    <line x1="254.0" y1="153.0" x2="306.0" y2="183.0" stroke="var(--akzent)" stroke-width="3" />
+                    <!-- Beschriftung des 3D-Körpers -->
+                    <rect x="218" y="128" width="124" height="19" fill="var(--tinte)" />
+                    <text x="280" y="141" text-anchor="middle" font-family="var(--mono)" font-size="9.5" font-weight="600" fill="var(--papier)">GETEILTER VEKTOR</text>
+                  </g>
+
+                  <!-- Korrekte Vorderkanten der Raumecke -->
+                  <line x1="280.0" y1="30.0" x2="280.0" y2="128.0" stroke="var(--tinte)" stroke-width="1.4" />
+                </svg>
+              </div>
+            </div>
+
+            <div class="schizo-seite">
+              <div>
+                <p class="label">Projektionsrichtung wählen</p>
+                <div class="knopf-gruppe" role="group" aria-label="Blickrichtung auf den Vektor wählen">
+                  <button type="button" class="knopf axis-btn" data-axis-btn="all" aria-pressed="true">Alle</button>
+                  <button type="button" class="knopf axis-btn" data-axis-btn="begriff" aria-pressed="false">△ Begriff</button>
+                  <button type="button" class="knopf axis-btn" data-axis-btn="struktur" aria-pressed="false">□ Struktur</button>
+                  <button type="button" class="knopf axis-btn" data-axis-btn="motiv" aria-pressed="false">○ Motiv</button>
+                </div>
+              </div>
+
+              <div class="zettel-karte" aria-live="polite">
+                <div class="kasten-kopf">
+                  <span id="proj-card-id">3D-OBJEKT // VEKTOR</span>
+                  <span id="proj-card-shape">△ · □ · ○</span>
+                </div>
+                <div class="zettel-karte-innen">
+                  <h3 id="proj-card-title">Ein Objekt, drei unterschiedliche Öffnungen</h3>
+                  <p id="proj-card-body">
+                    Das 3D-Objekt in der Mitte steht für den geteilten Vektor. Jedes Loch in den drei Flächen ist ein
+                    Zettel mit eigener Kontur: derselbe Vektor passt als Dreieck, als Quadrat und als Kreis, je nachdem,
+                    aus welcher Richtung das System ihn betrachtet.
+                  </p>
+                  <div class="marken-zeile" id="proj-card-tags">
+                    <span class="marke marke-akzent">Geteilter Vektor</span>
+                    <span class="marke">3 Perspektiven</span>
+                    <span class="marke">ohne Hauptstimme</span>
+                  </div>
+                </div>
+              </div>
+
+              <p class="mono" style="margin:0;color:var(--gedaempft)">
+                Klick auf eines der drei Löcher im Bild oder auf das Objekt in der Mitte wechselt die Ansicht.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 03 // DREI ARBEITSRÄUME -->
+        <section class="kapitel-band" id="raeume">
+          <p class="label">03 · Drei Arbeitsräume</p>
+          <h2>Kasten, Organisation und Schreiben</h2>
+          <p class="kapitel-einleitung">
+            Alle drei Ansichten greifen auf denselben lokalen Markdown-Ordner zu. Nichts wird in eine geschlossene
+            Datenbank gesperrt.
+          </p>
+
+          <div class="brutal-kasten">
+            <div class="werkbank-tabs" role="tablist" aria-label="Arbeitsräume umschalten">
+              <button type="button" class="werkbank-tab" role="tab" aria-selected="true" data-tab="kasten">01 · Kasten</button>
+              <button type="button" class="werkbank-tab" role="tab" aria-selected="false" data-tab="organisation">02 · Organisation</button>
+              <button type="button" class="werkbank-tab" role="tab" aria-selected="false" data-tab="schreiben">03 · Schreiben</button>
+            </div>
+
+            <!-- Raum 01 -->
+            <div class="werkbank-panel" data-panel="kasten">
+              <div class="werkbank-gitter">
+                <div class="innen-box">
+                  <p class="label">Einheitlicher Zettelbestand</p>
+                  <div class="zettel-liste">
+                    <div class="zettel-eintrag">
+                      <div class="zettel-eintrag-kopf">
+                        <strong>Bildung als Weltverhältnis statt Kompetenzliste</strong>
+                        <span class="marke marke-invert">ich · geprüft ✓</span>
+                      </div>
+                      <p>Atomarer Zettel aus eigener Reflexion. Trennt funktionale Qualifikation von einer Auseinandersetzung mit Widerstand.</p>
+                    </div>
+                    <div class="zettel-eintrag">
+                      <div class="zettel-eintrag-kopf">
+                        <strong>Rückkopplung zwischen Denkwerkzeug und Urteilskraft</strong>
+                        <span class="marke">gemeinsam · Dialog</span>
+                      </div>
+                      <p>Im Gespräch geschärfter Zettel mit Verweis auf eine Primärquelle und offener Gegenfrage für das Zettel-Sparring.</p>
+                    </div>
+                    <div class="zettel-eintrag">
+                      <div class="zettel-eintrag-kopf">
+                        <strong>Prüf-Eingang (MCP): Vorschlag wartet auf Freigabe</strong>
+                        <span class="marke marke-akzent">Ideen/_Eingang/</span>
+                      </div>
+                      <p>Externe Agenten schreiben nie direkt in den Kasten. Jeder Vorschlag durchläuft zuerst den Prüf-Eingang.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="innen-box">
+                  <p class="label">Heimatbasis &amp; Kasten-Pflege</p>
+                  <ul class="stichpunkte">
+                    <li><strong>Multi-Kasten-Profile:</strong> Physisch getrennte Zettelkästen mit eigener Port-Zuordnung und gemeinsamer Datenschutz-Union.</li>
+                    <li><strong>Cluster-first Gesamt-Graph:</strong> Zeigt auf Ebene 0 Bereiche und Cluster (&lt; 100 ms Budget) und öffnet Zettel erst beim Zoom.</li>
+                    <li><strong>Import &amp; Zettel-Sparring:</strong> Clippings und Chat-Exporte werden mit wählbarem Extraktions-Modell geprüft und vor dem Speichern geschärft.</li>
+                    <li><strong>Kontextsensitives Undo (<code>⌘Z</code>):</strong> Reversible Kasten-Aktionen lassen sich konfliktsicher rückgängig machen.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Raum 02 -->
+            <div class="werkbank-panel" data-panel="organisation" hidden>
+              <div class="werkbank-gitter">
+                <div class="innen-box">
+                  <p class="label">Widerspruchs-Klärung (⚡) &amp; Entscheidungslog</p>
+                  <div class="konflikt-paar">
+                    <div class="konflikt-box">
+                      <span class="mono" style="color:var(--gedaempft)">Z-011 · ich</span>
+                      <strong>Widerstand als Bedingung</strong>
+                      <p>Erkenntnis entsteht oft dort, wo sich das Material einer glatten Verarbeitung entzieht.</p>
+                    </div>
+                    <div class="konflikt-box">
+                      <span class="mono" style="color:var(--gedaempft)">Z-058 · quelle</span>
+                      <strong>Reibungsfreie Verdichtung</strong>
+                      <p>Sprachmodelle optimieren auf Plausibilität und glätten dabei leicht begriffliche Brüche.</p>
+                    </div>
+                  </div>
+
+                  <div class="urteil-streifen">
+                    <div class="mono" style="color:var(--akzent);font-weight:600">⚡ Explizites Modellurteil (nicht autoritativ)</div>
+                    Spannung zwischen dem methodischen Anspruch (Widerstand bewahren) und der Neigung zur Glättung. Vorschlag: im Theoriekapitel ausdrücklich abgrenzen.
+                  </div>
+
+                  <div class="entscheidung-zeile">
+                    [2026-11-26] entscheidungen.md → Spannung nicht auflösen, sondern als Begründung gegen ein „Ent-KI-Lektorat“ in Abschnitt 2.1 führen.
+                  </div>
+                </div>
+
+                <div class="innen-box">
+                  <p class="label">Briefing, Gliederung &amp; Hypergraph</p>
+                  <ul class="stichpunkte">
+                    <li><strong>Fragestellung &amp; Quellen:</strong> Exposé, Seminarplan sowie Markdown- und PDF-Quellen direkt im Projekt verknüpft.</li>
+                    <li><strong>Kuratierte Zuordnung:</strong> Zettel per <code>✓</code> annehmen, per <code>✗</code> verwerfen und per Perspektivwechsel auf blinde Flecken (<code>◌</code>) prüfen.</li>
+                    <li><strong>Vollbild-Hypergraph:</strong> Bubble Sets (<code>bubblesets-js</code>) zeigen Kapitel-Membranen, geteilte Zettel und Querbezüge ohne starren Baum.</li>
+                    <li><strong>Spuren der Urteilsbildung:</strong> Geklärte Spannungen lassen sich datiert in <code>entscheidungen.md</code> festhalten.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Raum 03 -->
+            <div class="werkbank-panel" data-panel="schreiben" hidden>
+              <div class="werkbank-gitter">
+                <div class="innen-box">
+                  <p class="label">CodeMirror-6-Editor · kapitel-02.md</p>
+                  <div class="editor-puffer raster">
+                    <div class="ed-zeile">
+                      <span class="ed-nr">01</span>
+                      <div class="ed-h">## 2.1 Autonomie im Umgang mit digitalen Werkzeugen</div>
+                    </div>
+                    <div class="ed-zeile">
+                      <span class="ed-nr">02</span>
+                      <div>
+                        Ein Denkwerkzeug bleibt hilfreich, solange seine Grenzen sichtbar sind und
+                        <span class="kritiker-markierung" title="KI-Kritiker: Klarheit / Beleg prüfen">jeder Übergang
+                          zwischen eigener Reflexion und maschineller Vorstrukturierung nachvollziehbar dokumentiert
+                          wird</span>.
+                      </div>
+                    </div>
+                    <div class="ed-zeile">
+                      <span class="ed-nr">03</span>
+                      <div>
+                        <div class="herkunft-block">
+                          <div class="herkunft-kommentar">&lt;!-- ck:ki-entwurf:start herkunft="G" datum="2026-11-26" --&gt;</div>
+                          Optionale KI-Rohentwürfe bleiben dauerhaft als <strong>G</strong> markiert, in der
+                          Markdown-Datei, im Editor-Gutter und im Lesemodus. Die Markierung verschwindet nie
+                          automatisch.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="innen-box">
+                  <p class="label">Live-Schizo-Cockpit &amp; Abschnitts-Hilfe</p>
+                  <ul class="stichpunkte">
+                    <li><strong>Live-Brücken je Absatz:</strong> Zeigt angenommene Zettel, Querbezüge und BibTeX-Literaturverweise passend zur Cursor-Position.</li>
+                    <li><strong>Expliziter KI-Kritiker:</strong> Prüft auf Klick in exakt drei Kategorien: <em>Argument-Lücken</em>, <em>Widersprüche</em> und <em>Klarheit</em>.</li>
+                    <li><strong>Argumentations-Gerüst (Standard):</strong> Erzeugt lokal eine Stichpunkt- und Belegstruktur ohne Fließtext.</li>
+                    <li><strong>Kein „Ent-KI-Lektorat“:</strong> Funktionen zum Glätten oder Verschleiern von KI-Spuren sind bewusst ausgeschlossen.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 04 // GRENZEN & HERKUNFT -->
+        <section class="kapitel-band" id="grenzen">
+          <p class="label">04 · Grenzen &amp; Herkunft</p>
+          <h2>Nachvollziehbare Regeln beim Einsatz von KI</h2>
+          <p class="kapitel-einleitung">
+            Ein lokales Forschungswerkzeug hilft mir nur dann, wenn jederzeit klar bleibt, woher ein Gedanke stammt
+            und welche Daten wohin gehen. Herkunft, Kritik und Datenschutz sind deshalb direkt im Programm angelegt.
+          </p>
+
+          <ul class="regel-liste">
+            <li>
+              <div class="regel-nr">01</div>
+              <div class="regel-titel">
+                <strong>Durchgängige Herkunft statt Ungewissheit</strong>
+                <span class="mono" style="color:var(--gedaempft)">ich · gemeinsam · quelle · unklar</span>
+              </div>
+              <div class="regel-text">
+                Alle Zettel liegen im selben offenen Bestand und tragen sichtbar ihre Herkunft sowie den Prüfstatus
+                von Literatur- und Autorenangaben (<code>✓</code> geprüft / <code>○</code> ungeprüft). Eigene
+                Gedanken, Quellenarbeit und Gesprächsergebnisse bleiben jederzeit unterscheidbar.
+              </div>
+            </li>
+            <li>
+              <div class="regel-nr">02</div>
+              <div class="regel-titel">
+                <strong>Kein stilles Ghostwriting, kein „Ent-KI-Lektorat“</strong>
+                <span class="mono" style="color:var(--gedaempft)">herkunft="G" · dauerhaft</span>
+              </div>
+              <div class="regel-text">
+                Die Anwendung erzeugt nie unbemerkt Text im Hintergrund und verzichtet bewusst auf Funktionen, die
+                KI-Spuren verwischen. Im Editor gibt es stattdessen ein lokales <strong>Argumentations-Gerüst</strong>
+                ohne Fließtext, einen expliziten <strong>KI-Kritiker</strong> und auf bewussten Klick dauerhaft als
+                <code>G</code> markierte Rohentwürfe.
+              </div>
+            </li>
+            <li>
+              <div class="regel-nr">03</div>
+              <div class="regel-titel">
+                <strong>Kontext-Chips und <code>entscheidungen.md</code></strong>
+                <span class="mono" style="color:var(--gedaempft)">⌘J · beratend · datiert</span>
+              </div>
+              <div class="regel-text">
+                Der optionale Fenster-Assistent (<code>⌘J</code>) arbeitet beratend und zeigt vor jeder Anfrage
+                abwählbare Kontext-Chips, die genau offenlegen, welche nicht-privaten Dokumente übergeben werden.
+                Inhaltliche und methodische Festlegungen werden datiert in <code>entscheidungen.md</code> festgehalten.
+              </div>
+            </li>
+            <li>
+              <div class="regel-nr">04</div>
+              <div class="regel-titel">
+                <strong>Fail-Closed-Datenschutz (<code>privacy.rs</code>)</strong>
+                <span class="mono" style="color:var(--gedaempft)">privat: true · Rust-Guard</span>
+              </div>
+              <div class="regel-text">
+                Sensible Ordner und als <code>privat: true</code> markierte Zettel werden serverseitig im Rust-Backend
+                vor Cloud-KI-APIs, MCP-Servern und Projekt-Briefings blockiert. Jeder Kontakt löst eine sichtbare
+                Meldung aus, und Multi-Kasten-Profile können bestehende Sperren nicht abschwächen.
+              </div>
+            </li>
+          </ul>
+
+          <div class="matrix-wrap">
+            <table class="matrix">
+              <thead>
+                <tr>
+                  <th>Funktion</th>
+                  <th>Verarbeitung</th>
+                  <th>Kontrollmechanismus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Zettel-Suche, Hypergraph &amp; Gliederung</strong></td>
+                  <td>Lokal (Rust und lokales <code>czk</code> auf <code>127.0.0.1</code>)</td>
+                  <td>Herkunft (<code>ich</code> / <code>gemeinsam</code> / <code>quelle</code>) und Ähnlichkeitsschwelle dauerhaft sichtbar.</td>
+                </tr>
+                <tr>
+                  <td><strong>Argumentations-Gerüst (Editor)</strong></td>
+                  <td>Lokal, kein Fließtext</td>
+                  <td>Stellt angenommene Zettel, Belege, <code>⚡</code>-Spannungen und Entscheidungen übersichtlich zusammen.</td>
+                </tr>
+                <tr>
+                  <td><strong>Inline-Kritiker &amp; Zettel-Sparring</strong></td>
+                  <td>Expliziter Klick (Ollama lokal oder BYOK)</td>
+                  <td>Prüft Lücken, Widersprüche und Klarheit. Alle Dateipfade laufen vorab durch <code>privacy.rs</code>.</td>
+                </tr>
+                <tr>
+                  <td><strong>Optionaler KI-Rohentwurf</strong></td>
+                  <td>Expliziter Klick (Opt-in)</td>
+                  <td>Dauerhafte Marker <code>&lt;!-- ck:ki-entwurf:start herkunft="G" ... --&gt;</code> plus sichtbare Hervorhebung im Editor.</td>
+                </tr>
+                <tr>
+                  <td><strong>Externe KI-Agenten über MCP</strong></td>
+                  <td>Lesend + Prüf-Inbox</td>
+                  <td>Kein direktes Schreiben in Zettel oder Manuskript. Vorschläge landen ausschließlich in <code>Ideen/_Eingang/</code>.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 05 // AUFBAU -->
+        <section class="kapitel-band" id="aufbau">
+          <p class="label">05 · Technischer Aufbau</p>
+          <h2>Drei lokale Schichten</h2>
+          <p class="kapitel-einleitung">
+            Oberfläche, Dateischicht und lokales Analyse-Backend sind über typisierte Schnittstellen getrennt und
+            laufen auf dem eigenen Rechner.
+          </p>
+
+          <div class="schichten">
+            <div class="schicht-box">
+              <div>
+                <span class="mono" style="color:var(--akzent)">01 · Frontend</span>
+                <h3>Oberfläche, Editor &amp; Hypergraph</h3>
+                <span class="mono" style="color:var(--gedaempft)">TypeScript · Vite · CodeMirror 6</span>
+              </div>
+              <p>
+                Arbeitsräume für <code>Kasten</code>, <code>Organisation</code> und <code>Schreiben</code>,
+                CodeMirror 6 mit Inline-Kritiker und Provenienz-Markierung, <code>bubblesets-js</code> für
+                Kapitel-Membranen sowie kontextsensitives Scoped Undo.
+              </p>
+              <span class="marke marke-invert">33 TS-Tests</span>
+            </div>
+
+            <div class="schicht-bus">Tauri IPC · typisierte Kommandos</div>
+
+            <div class="schicht-box">
+              <div>
+                <span class="mono" style="color:var(--akzent)">02 · Kern</span>
+                <h3>Datenschutz, Dateien &amp; KI-Guards</h3>
+                <span class="mono" style="color:var(--gedaempft)">Tauri 2 · Rust</span>
+              </div>
+              <p>
+                Serverseitiger Fail-Closed-Filter (<code>privacy.rs</code>), atomare Datei-I/O
+                (<code>workspace.rs</code>), Multi-Kasten-Konfiguration mit <code>0600</code>-Rechten
+                (<code>config.rs</code>), BibTeX-Zitationen und projektbezogenes Decision Log
+                (<code>decisions.rs</code>).
+              </p>
+              <span class="marke marke-invert">40 Rust-Tests</span>
+            </div>
+
+            <div class="schicht-bus">Loopback 127.0.0.1 · trait KastenEngine</div>
+
+            <div class="schicht-box">
+              <div>
+                <span class="mono" style="color:var(--akzent)">03 · Rechenmotor</span>
+                <h3>Semantik, Embeddings &amp; MCP</h3>
+                <span class="mono" style="color:var(--gedaempft)">Python (lokal · czk)</span>
+              </div>
+              <p>
+                Das lokale Python-Backend (<code>czk</code>) stellt in <code>v0.1.1</code> über
+                <code>127.0.0.1</code> Embeddings, Schizo-Ähnlichkeiten, Widerspruchserkennung und den
+                lesenden MCP-Server samt Prüf-Inbox bereit, entkoppelt über <code>trait KastenEngine</code>.
+              </p>
+              <span class="marke">Lokal · MCP</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 06 // EINORDNUNG (Portfolio .rn-block mit Randnummern) -->
+        <section class="kapitel-band" id="einordnung">
+          <p class="label">06 · Wissenschaftlicher Kontext</p>
+          <h2>Einordnung, Entstehung und persönliche Vorstellung</h2>
+
+          <div class="rn-block" id="r1">
+            <a class="rn-nr" href="#r1">Rn 1<span class="rn-pilcrow" aria-hidden="true">¶</span></a>
+            <div class="rn-text">
+              <p>
+                <strong>Chattelkasten</strong> (Stand <code>v0.1.1</code>, November 2026) ist ein selbst konzipiertes
+                und in iterativer Mensch-KI-Zusammenarbeit entstandenes Forschungswerkzeug. Diese Seite verfolgt keinen
+                kommerziellen Zweck. Sie beschreibt die Funktionsweise als nachvollziehbaren Bezugspunkt für
+                wissenschaftliche Arbeiten, bei denen das Programm zur Notizverwaltung, Literaturarbeit oder
+                Schreibbegleitung genutzt wurde.
+              </p>
+            </div>
+          </div>
+
+          <div class="rn-block" id="r2">
+            <a class="rn-nr" href="#r2">Rn 2<span class="rn-pilcrow" aria-hidden="true">¶</span></a>
+            <div class="rn-text">
+              <p>
+                Im Arbeitsprozess unterstützt Chattelkasten bei Übersicht, Perspektivwechsel und kritischer Durchsicht.
+                Die Fragestellung, die Bewertung von Quellen und Widersprüchen, dokumentierte Entscheidungen
+                (<code>entscheidungen.md</code>) sowie die eigenständige Urteilsbildung und Textverfassung bleiben
+                vollständig bei der schreibenden Person. Wenn KI-Modelle beratend hinzugezogen werden, etwa im
+                Zettel-Sparring oder durch den Inline-Kritiker, geschieht das immer auf expliziten Klick,
+                datenschutzgefiltert und mit klarer Herkunftsmarkierung.
+              </p>
+            </div>
+          </div>
+
+          <div class="rn-block" id="r3">
+            <a class="rn-nr" href="#r3">Rn 3<span class="rn-pilcrow" aria-hidden="true">¶</span></a>
+            <div class="rn-text">
+              <p>
+                Auch die Software selbst entstand offen im Zusammenspiel aus eigener Konzeption, Architektur-Entwürfen,
+                Review-Schleifen, KI-gestützter Umsetzung und automatisierten Tests.
+              </p>
+            </div>
+          </div>
+
+          <div class="einordnung-meta">
+            <div>
+              <strong>Vorstellung auf Anfrage</strong>
+              Auf Anfrage zeige ich das Werkzeug gerne persönlich, inklusive einer praktischen Demo des Arbeitsflusses
+              sowie Einsicht in Architektur, Tests und Quellcode.
+            </div>
+            <div>
+              <strong>Projektstand &amp; Codebasis</strong>
+              Die Desktop-App (<code>chattelkasten-app</code>, Stand <code>v0.1.1</code>) und das lokale
+              Analyse-Backend (<code>czk</code>) liegen in privaten Repositories.
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <span>Chattelkasten · <strong>chattelkasten.com</strong> · Stand v0.1.1 (November 2026)</span>
-      <span>Statische Seite — keine Cookies, kein Tracking, keine externen Skripte.</span>
-    </div>
+  <footer class="fusszeile">
+    <span><strong>Chattelkasten</strong> · chattelkasten.com · Stand v0.1.1 (November 2026)</span>
+    <span>Statische Seite ohne Cookies, ohne Tracking und ohne externe Skripte.</span>
   </footer>
 
-  <script>
-    (function () {
-      var root = document.documentElement;
-      var btn = document.getElementById("theme-toggle");
-      var icon = document.getElementById("theme-icon");
-      var label = document.getElementById("theme-label");
-
-      function applyTheme(theme) {
-        root.setAttribute("data-theme", theme);
-        var isDark = theme === "dark";
-        if (icon) icon.textContent = isDark ? "☀" : "☾";
-        if (label) label.textContent = isDark ? "Hell" : "Dunkel";
-      }
-
-      var saved = null;
-      try { saved = localStorage.getItem("ck-site-theme"); } catch (_) {}
-      if (saved === "dark" || saved === "light") {
-        applyTheme(saved);
-      }
-
-      if (btn) {
-        btn.addEventListener("click", function () {
-          var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-          applyTheme(next);
-          try { localStorage.setItem("ck-site-theme", next); } catch (_) {}
-        });
-      }
-
-      var tabs = document.querySelectorAll(".studio-tab");
-      var panels = document.querySelectorAll(".studio-panel");
-      tabs.forEach(function (tab) {
-        tab.addEventListener("click", function () {
-          var target = tab.getAttribute("data-tab");
-          tabs.forEach(function (t) {
-            t.setAttribute("aria-selected", t === tab ? "true" : "false");
-          });
-          panels.forEach(function (p) {
-            if (p.getAttribute("data-panel") === target) {
-              p.removeAttribute("hidden");
-            } else {
-              p.setAttribute("hidden", "");
-            }
-          });
-        });
-      });
-    })();
-  </script>
+  <script src="./app.js"></script>
 </body>
+
 </html>

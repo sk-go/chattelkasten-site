@@ -1,11 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
-  <rect x="6" y="6" width="116" height="116" rx="28" fill="#171b2e"/>
-  <rect x="6" y="6" width="116" height="116" rx="28" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
-  <circle cx="49" cy="52" r="24" fill="rgba(110,123,242,0.22)" stroke="#6e7bf2" stroke-width="5.5"/>
-  <circle cx="79" cy="55" r="24" fill="rgba(52,211,153,0.18)" stroke="#22b583" stroke-width="5.5"/>
-  <circle cx="64" cy="79" r="24" fill="rgba(245,158,11,0.20)" stroke="#e5940c" stroke-width="5.5"/>
-  <circle cx="46" cy="51" r="6" fill="#f8fafc"/>
-  <circle cx="82" cy="54" r="6" fill="#f8fafc"/>
-  <circle cx="64" cy="64" r="5.5" fill="#f8fafc"/>
-  <circle cx="64" cy="83" r="6" fill="#f8fafc"/>
+  <rect x="4" y="4" width="120" height="120" fill="#111111" stroke="#e9e9e6" stroke-width="4"/>
+  <!-- Architectural grid cross -->
+  <line x1="64" y1="12" x2="64" y2="116" stroke="#2d2d2a" stroke-width="2"/>
+  <line x1="12" y1="64" x2="116" y2="64" stroke="#2d2d2a" stroke-width="2"/>
+  <!-- Overlapping brutalist hyperedge frames -->
+  <rect x="20" y="22" width="54" height="54" stroke="#e9e9e6" stroke-width="3.5"/>
+  <rect x="54" y="48" width="54" height="54" stroke="#e9e9e6" stroke-width="3.5" stroke-dasharray="8 5"/>
+  <!-- Tension diagonal in vermilion -->
+  <line x1="36" y1="40" x2="92" y2="86" stroke="#ff4a1c" stroke-width="4"/>
+  <!-- Nodes -->
+  <rect x="30" y="34" width="12" height="12" fill="#e9e9e6"/>
+  <rect x="86" y="80" width="12" height="12" fill="#e9e9e6"/>
+  <rect x="57" y="56" width="14" height="14" fill="#ff4a1c"/>
 </svg>
